@@ -127,9 +127,18 @@
     }
 
     function injetarCSS(css) {
-      var tag = document.createElement('style');
-      tag.textContent = css;
-      document.head.appendChild(tag);
+      // Importante: cada <style> do arquivo original é uma folha de estilo
+      // INDEPENDENTE no navegador. Se juntássemos tudo numa única tag,
+      // um erro de sintaxe (ex: uma tag <style> que "engole" texto que não
+      // deveria por engano) corromperia a leitura de TODO o restante do
+      // arquivo combinado. Recriamos cada bloco original como sua própria
+      // tag <style>, preservando o isolamento que existia antes.
+      var blocos = css.split("/* ===== próximo <style> ===== */");
+      blocos.forEach(function (bloco) {
+        var tag = document.createElement('style');
+        tag.textContent = bloco;
+        document.head.appendChild(tag);
+      });
     }
 
     function injetarJS(js) {

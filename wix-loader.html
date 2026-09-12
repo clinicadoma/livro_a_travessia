@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="light only">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Open+Sans:wght@400;600;700&family=Orbitron:wght@700;900&family=Roboto:wght@400;700;900&family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;">
+
+  <div id="doma-root">
+    <p style="text-align:center;padding:60px 20px;font-family:sans-serif;color:#94a3b8;">
+      Carregando a Travessia...
+    </p>
+  </div>
+
+  <script>
+  (function () {
+
+    // ======================================================
+    // 1) CONFIGURAÇÃO — troque pelos seus dados do GitHub
+    // ======================================================
+    var GH_USER = "clinicadoma";
+    var GH_REPO = "livro_a_travessia";
+    var GH_REF  = "main";
+
+    var BASE_REPO  = "https://cdn.jsdelivr.net/gh/" + GH_USER + "/" + GH_REPO + "@" + GH_REF + "/";
+
+    // ======================================================
+    // QUEBRA-CACHE AUTOMÁTICO
+    //
+    // O jsDelivr guarda em cache o conteúdo de uma branch como "main"
+    // por várias horas (às vezes mais). Isso já causou 3 rodadas de
+    // "atualizei o GitHub mas o site continua com a versão antiga".
+    // Em vez de depender de travar num commit específico toda vez que
+    // algo muda (o que exige um passo manual extra a cada atualização),
+    // colamos um parâmetro diferente a cada carregamento de página em
+    // TODAS as URLs buscadas — isso faz o jsDelivr (e o navegador)
+    // tratarem cada carregamento como uma URL nova, sempre buscando o
+    // conteúdo mais recente na origem.
+    //
+    // Custo: cada visita busca os arquivos "quentes" (sem cache), então
+    // fica um pouco mais lento que o cache ideal do jsDelivr — mas para
+    // esse projeto, confiabilidade importa mais do que os milissegundos
+    // economizados por um CDN em cache.
+    // ======================================================
+    var CACHE_BUST = "?_cb=" + Date.now();
+    console.log("[doma-loader] quebra-cache desta carga:", CACHE_BUST);
+
+    var BASE        = BASE_REPO;
+    var BASE_CHUNKS = BASE + "html/chunks/";
+
+    // ======================================================
+    // 2) SHIM — ESSENCIAL, e agora "recarregável".
+    //
+    // Vários scripts legados fazem sua configuração dentro de
+    // document.addEventListener('DOMContentLoaded', ...) ou de
+    // window.onload = fn. Isso já disparou há muito tempo na página
+    // do Wix, então:
+    //   a) interceptamos esses registros e os disparamos uma vez,
+    //      no próximo tick;
+    //   b) GUARDAMOS cada callback registrado, para que o motor de
+    //      navegação (core.js) possa "re-tocar" todos eles de novo
+    //      toda vez que um novo capítulo for injetado — assim,
+    //      configurações que dependem de elementos de um capítulo
+    //      ainda não carregado simplesmente tentam de novo mais
+    //      tarde e funcionam quando o capítulo certo finalmente
+    //      existir no DOM.
+    // ======================================================
+    var callbacksDCL = [];
+
+    function prepararAmbienteParaModulosLegados() {
+      [document, window].forEach(function (alvo) {
+        var addOriginal = alvo.addEventListener.bind(alvo);
+        alvo.addEventListener = function (tipo, cb, opts) {
+          if (tipo === 'DOMContentLoaded') {
+            callbacksDCL.push(cb);
+            setTimeout(function () { try { cb(); } catch (e) { /* elemento de um capítulo ainda não carregado */ } }, 0);
+            return;
+          }
+          return addOriginal(tipo, cb, opts);
+        };
+      });
+
+      // Cobre padrões do tipo: window.onload = minhaFuncao;
+      var _onloadReal = null;
+      try {
+        Object.defineProperty(window, 'onload', {
+          configurable: true,
+          get: function () { return _onloadReal; },
+          set: function (fn) {
+            _onloadReal = fn;
+            if (typeof fn === 'function') {
+              callbacksDCL.push(fn);
+              setTimeout(function () { try { fn(); } catch (e) { /* elemento de um capítulo ainda não carregado */ } }, 0);
+            }
+          }
+        });
+      } catch (e) { /* alguns navegadores antigos podem já ter essa prop não-configurável */ }
+
+      // Exposto para o core.js chamar depois de injetar cada capítulo novo.
+      // Cada callback roda isolado (try/catch) para que um erro em um deles
+      // (por ex. um elemento de OUTRO capítulo que ainda não existe) não
+      // impeça os demais de rodar.
+      window.__domaRefireDCL = function () {
+        callbacksDCL.forEach(function (cb) {
+          try { cb(); } catch (e) { /* silencioso: o elemento alvo ainda não existe */ }
+        });
+      };
+    }
+
+    // ======================================================
+    // 3) CARREGADORES
+    // ======================================================
+    function buscarTexto(url) {
+      return fetch(url, { cache: "no-store" }).then(function (r) {
+        if (!r.ok) throw new Error("Falha ao buscar " + url + " (HTTP " + r.status + ")");
+        return r.text();
+      });
+    }
+
+    function buscarJSON(url) {
+      return fetch(url, { cache: "no-store" }).then(function (r) {
+        if (!r.ok) throw new Error("Falha ao buscar " + url + " (HTTP " + r.status + ")");
+        return r.json();
+      });
+    }
+
+    function injetarCSS(css) {
+      var tag = document.createElement('style');
+      tag.textContent = css;
+      document.head.appendChild(tag);
+    }
+
+    function injetarJS(js) {
+      // Tag <script> real (não eval), para que as funções fiquem
+      // disponíveis globalmente (usadas em onclick="...").
+      // Scripts inline sem "src" executam de forma síncrona neste append.
+      var tag = document.createElement('script');
+      tag.textContent = js;
+      document.body.appendChild(tag);
+    }
+
+    var root = document.getElementById('doma-root');
+
+    prepararAmbienteParaModulosLegados();
+
+    Promise.all([
+      buscarJSON(BASE + "manifest.json" + CACHE_BUST),
+      buscarTexto(BASE + "css/style.css" + CACHE_BUST),
+      buscarTexto(BASE + "js/core.js" + CACHE_BUST)
+    ])
+    .then(function (resultados) {
+      var manifest = resultados[0];
+      var css = resultados[1];
+      var coreJs = resultados[2];
+
+      injetarCSS(css);
+      // Recria o #doma-app-wrapper: no arquivo original, TODAS as páginas e
+      // popups viviam dentro dele, e o CSS dele (position:absolute; z-index:100)
+      // é o que garante que os modais (z-index bem mais alto) fiquem por cima
+      // das páginas. Sem recriar esse elemento, cada capítulo vira um <div>
+      // solto sem contexto de empilhamento em comum, e os modais podem
+      // renderizar ATRÁS do slide ativo.
+      root.innerHTML = '<div id="doma-app-wrapper"></div>';
+      injetarJS(coreJs);   // define domaCarregarCapitulo, mudarPagina, irParaTela, etc.
+
+      // __domaBootstrap já carrega o capítulo inicial (índice 0: áudios,
+      // carteira, modal, primeiras páginas) e inicializa a navegação.
+      // O 3º argumento é o mesmo quebra-cache, repassado para toda busca
+      // de capítulo feita depois (dentro do core.js).
+      return window.__domaBootstrap(manifest, BASE_CHUNKS, CACHE_BUST);
+    })
+    .catch(function (err) {
+      console.error("Doma loader:", err);
+      root.innerHTML = "<p style='padding:30px;text-align:center;color:#900;font-family:sans-serif;'>" +
+        "Não foi possível carregar o conteúdo. Recarregue a página.</p>";
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

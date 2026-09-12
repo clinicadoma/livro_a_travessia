@@ -1,0 +1,718 @@
+{
+  "chunks": [
+    {
+      "index": 0,
+      "arquivo": "000_inicial.html",
+      "start_id": null,
+      "is_core": false
+    },
+    {
+      "index": 1,
+      "arquivo": "001_pag-3.html",
+      "start_id": "pag-3",
+      "is_core": false
+    },
+    {
+      "index": 2,
+      "arquivo": "002_pag-5.html",
+      "start_id": "pag-5",
+      "is_core": false
+    },
+    {
+      "index": 3,
+      "arquivo": "003_pag-7.html",
+      "start_id": "pag-7",
+      "is_core": false
+    },
+    {
+      "index": 4,
+      "arquivo": "004_pag-8.html",
+      "start_id": "pag-8",
+      "is_core": false
+    },
+    {
+      "index": 5,
+      "arquivo": "005_pag-10.html",
+      "start_id": "pag-10",
+      "is_core": true
+    },
+    {
+      "index": 6,
+      "arquivo": "006_pag-proximo-nivel.html",
+      "start_id": "pag-proximo-nivel",
+      "is_core": true
+    },
+    {
+      "index": 7,
+      "arquivo": "007_pag-mapa-final.html",
+      "start_id": "pag-mapa-final",
+      "is_core": false
+    },
+    {
+      "index": 8,
+      "arquivo": "008_pag-roleta.html",
+      "start_id": "pag-roleta",
+      "is_core": false
+    },
+    {
+      "index": 9,
+      "arquivo": "009_pag-capitulo-1.html",
+      "start_id": "pag-capitulo-1",
+      "is_core": false
+    },
+    {
+      "index": 10,
+      "arquivo": "010_tela-game.html",
+      "start_id": "tela-game",
+      "is_core": false
+    },
+    {
+      "index": 11,
+      "arquivo": "011_pag-mecanica-mente.html",
+      "start_id": "pag-mecanica-mente",
+      "is_core": false
+    },
+    {
+      "index": 12,
+      "arquivo": "012_pag-intro-darkmode.html",
+      "start_id": "pag-intro-darkmode",
+      "is_core": false
+    },
+    {
+      "index": 13,
+      "arquivo": "013_pag-26.html",
+      "start_id": "pag-26",
+      "is_core": false
+    },
+    {
+      "index": 14,
+      "arquivo": "014_slide-intro-1.html",
+      "start_id": "slide-intro-1",
+      "is_core": false
+    },
+    {
+      "index": 15,
+      "arquivo": "015_pag-25-b.html",
+      "start_id": "pag-25-b",
+      "is_core": false
+    },
+    {
+      "index": 16,
+      "arquivo": "016_pag-bagagem-domador.html",
+      "start_id": "pag-bagagem-domador",
+      "is_core": true
+    },
+    {
+      "index": 17,
+      "arquivo": "017_acendendo-lanterna.html",
+      "start_id": "acendendo-lanterna",
+      "is_core": false
+    },
+    {
+      "index": 18,
+      "arquivo": "018_roleta_interna.html",
+      "start_id": "roleta_interna",
+      "is_core": false
+    },
+    {
+      "index": 19,
+      "arquivo": "019_pag-polvo.html",
+      "start_id": "pag-polvo",
+      "is_core": false
+    },
+    {
+      "index": 20,
+      "arquivo": "020_superpoder.html",
+      "start_id": "superpoder",
+      "is_core": false
+    },
+    {
+      "index": 21,
+      "arquivo": "021_malabarista.html",
+      "start_id": "malabarista",
+      "is_core": false
+    },
+    {
+      "index": 22,
+      "arquivo": "022_aliviando-mochila.html",
+      "start_id": "aliviando-mochila",
+      "is_core": false
+    },
+    {
+      "index": 23,
+      "arquivo": "023_espelho-restaura.html",
+      "start_id": "espelho-restaura",
+      "is_core": false
+    },
+    {
+      "index": 24,
+      "arquivo": "024_ponte-cristal.html",
+      "start_id": "ponte-cristal",
+      "is_core": false
+    },
+    {
+      "index": 25,
+      "arquivo": "025_checkin-ouro.html",
+      "start_id": "checkin-ouro",
+      "is_core": false
+    },
+    {
+      "index": 26,
+      "arquivo": "026_jogo-verdade.html",
+      "start_id": "jogo-verdade",
+      "is_core": false
+    },
+    {
+      "index": 27,
+      "arquivo": "027_pag-diagnostico-profundo.html",
+      "start_id": "pag-diagnostico-profundo",
+      "is_core": false
+    },
+    {
+      "index": 28,
+      "arquivo": "028_pag-tribunal-intro.html",
+      "start_id": "pag-tribunal-intro",
+      "is_core": false
+    },
+    {
+      "index": 29,
+      "arquivo": "029_quem-voz.html",
+      "start_id": "quem-voz",
+      "is_core": false
+    },
+    {
+      "index": 30,
+      "arquivo": "030_retrato-falado.html",
+      "start_id": "retrato-falado",
+      "is_core": false
+    },
+    {
+      "index": 31,
+      "arquivo": "031_resgate-crianca.html",
+      "start_id": "resgate-crianca",
+      "is_core": true
+    },
+    {
+      "index": 32,
+      "arquivo": "032_pag-tesouro.html",
+      "start_id": "pag-tesouro",
+      "is_core": false
+    },
+    {
+      "index": 33,
+      "arquivo": "033_loja-discos.html",
+      "start_id": "loja-discos",
+      "is_core": false
+    },
+    {
+      "index": 34,
+      "arquivo": "034_pag-jogo-insights.html",
+      "start_id": "pag-jogo-insights",
+      "is_core": false
+    },
+    {
+      "index": 35,
+      "arquivo": "035_pag-72.html",
+      "start_id": "pag-72",
+      "is_core": true
+    }
+  ],
+  "pages": [
+    {
+      "id": "pag-1",
+      "chunk": 0
+    },
+    {
+      "id": "pag-2",
+      "chunk": 0
+    },
+    {
+      "id": "pag-mapa-travessia",
+      "chunk": 0
+    },
+    {
+      "id": "pag-sumario",
+      "chunk": 0
+    },
+    {
+      "id": "pag-3",
+      "chunk": 1
+    },
+    {
+      "id": "pag-4",
+      "chunk": 1
+    },
+    {
+      "id": "pag-5",
+      "chunk": 2
+    },
+    {
+      "id": "pag-6",
+      "chunk": 2
+    },
+    {
+      "id": "pag-7",
+      "chunk": 3
+    },
+    {
+      "id": "pag-8",
+      "chunk": 4
+    },
+    {
+      "id": "pag-9",
+      "chunk": 4
+    },
+    {
+      "id": "pag-10",
+      "chunk": 5
+    },
+    {
+      "id": "pag-11",
+      "chunk": 5
+    },
+    {
+      "id": "pag-12",
+      "chunk": 5
+    },
+    {
+      "id": "pag-13",
+      "chunk": 5
+    },
+    {
+      "id": "pag-14",
+      "chunk": 5
+    },
+    {
+      "id": "pag-15",
+      "chunk": 5
+    },
+    {
+      "id": "pag-16",
+      "chunk": 5
+    },
+    {
+      "id": "pag-17",
+      "chunk": 5
+    },
+    {
+      "id": "pag-18",
+      "chunk": 5
+    },
+    {
+      "id": "pag-19",
+      "chunk": 5
+    },
+    {
+      "id": "pag-20",
+      "chunk": 5
+    },
+    {
+      "id": "pag-21",
+      "chunk": 5
+    },
+    {
+      "id": "pag-25",
+      "chunk": 5
+    },
+    {
+      "id": "pag-24",
+      "chunk": 5
+    },
+    {
+      "id": "pag-proximo-nivel",
+      "chunk": 6
+    },
+    {
+      "id": "pag-mapa-final",
+      "chunk": 7
+    },
+    {
+      "id": "pag-roleta",
+      "chunk": 8
+    },
+    {
+      "id": "pag-capitulo-1",
+      "chunk": 9
+    },
+    {
+      "id": "tela-game",
+      "chunk": 10
+    },
+    {
+      "id": null,
+      "chunk": 10
+    },
+    {
+      "id": null,
+      "chunk": 10
+    },
+    {
+      "id": "pag-mecanica-mente",
+      "chunk": 11
+    },
+    {
+      "id": null,
+      "chunk": 11
+    },
+    {
+      "id": "pag-intro-darkmode",
+      "chunk": 12
+    },
+    {
+      "id": null,
+      "chunk": 12
+    },
+    {
+      "id": null,
+      "chunk": 12
+    },
+    {
+      "id": "pag-26",
+      "chunk": 13
+    },
+    {
+      "id": "slide-intro-1",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-2",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-3",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-4",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-5",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-6-espaco",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-7",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-8",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-9",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-13",
+      "chunk": 14
+    },
+    {
+      "id": "slide-intro-14",
+      "chunk": 14
+    },
+    {
+      "id": "pag-25-b",
+      "chunk": 15
+    },
+    {
+      "id": null,
+      "chunk": 15
+    },
+    {
+      "id": null,
+      "chunk": 15
+    },
+    {
+      "id": "pag-metodologia",
+      "chunk": 15
+    },
+    {
+      "id": null,
+      "chunk": 15
+    },
+    {
+      "id": "pag-teste-3",
+      "chunk": 15
+    },
+    {
+      "id": "pag-bagagem-domador",
+      "chunk": 16
+    },
+    {
+      "id": "acendendo-lanterna",
+      "chunk": 17
+    },
+    {
+      "id": null,
+      "chunk": 17
+    },
+    {
+      "id": null,
+      "chunk": 17
+    },
+    {
+      "id": "roleta_interna",
+      "chunk": 18
+    },
+    {
+      "id": null,
+      "chunk": 18
+    },
+    {
+      "id": null,
+      "chunk": 18
+    },
+    {
+      "id": "pag-polvo",
+      "chunk": 19
+    },
+    {
+      "id": null,
+      "chunk": 19
+    },
+    {
+      "id": "superpoder",
+      "chunk": 20
+    },
+    {
+      "id": null,
+      "chunk": 20
+    },
+    {
+      "id": null,
+      "chunk": 20
+    },
+    {
+      "id": null,
+      "chunk": 20
+    },
+    {
+      "id": "malabarista",
+      "chunk": 21
+    },
+    {
+      "id": null,
+      "chunk": 21
+    },
+    {
+      "id": null,
+      "chunk": 21
+    },
+    {
+      "id": null,
+      "chunk": 21
+    },
+    {
+      "id": "aliviando-mochila",
+      "chunk": 22
+    },
+    {
+      "id": "espelho-restaura",
+      "chunk": 23
+    },
+    {
+      "id": null,
+      "chunk": 23
+    },
+    {
+      "id": null,
+      "chunk": 23
+    },
+    {
+      "id": null,
+      "chunk": 23
+    },
+    {
+      "id": "ponte-cristal",
+      "chunk": 24
+    },
+    {
+      "id": null,
+      "chunk": 24
+    },
+    {
+      "id": null,
+      "chunk": 24
+    },
+    {
+      "id": null,
+      "chunk": 24
+    },
+    {
+      "id": "checkin-ouro",
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": null,
+      "chunk": 25
+    },
+    {
+      "id": "jogo-verdade",
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": null,
+      "chunk": 26
+    },
+    {
+      "id": "pag-diagnostico-profundo",
+      "chunk": 27
+    },
+    {
+      "id": "pag-tribunal-intro",
+      "chunk": 28
+    },
+    {
+      "id": null,
+      "chunk": 28
+    },
+    {
+      "id": null,
+      "chunk": 28
+    },
+    {
+      "id": null,
+      "chunk": 28
+    },
+    {
+      "id": null,
+      "chunk": 28
+    },
+    {
+      "id": null,
+      "chunk": 28
+    },
+    {
+      "id": "quem-voz",
+      "chunk": 29
+    },
+    {
+      "id": null,
+      "chunk": 29
+    },
+    {
+      "id": null,
+      "chunk": 29
+    },
+    {
+      "id": null,
+      "chunk": 29
+    },
+    {
+      "id": "retrato-falado",
+      "chunk": 30
+    },
+    {
+      "id": null,
+      "chunk": 30
+    },
+    {
+      "id": null,
+      "chunk": 30
+    },
+    {
+      "id": "resgate-crianca",
+      "chunk": 31
+    },
+    {
+      "id": null,
+      "chunk": 31
+    },
+    {
+      "id": null,
+      "chunk": 31
+    },
+    {
+      "id": "carta-domador",
+      "chunk": 31
+    },
+    {
+      "id": "pag-tesouro",
+      "chunk": 32
+    },
+    {
+      "id": "loja-discos",
+      "chunk": 33
+    },
+    {
+      "id": "pag-jogo-insights",
+      "chunk": 34
+    },
+    {
+      "id": "pag-72",
+      "chunk": 35
+    }
+  ]
+}

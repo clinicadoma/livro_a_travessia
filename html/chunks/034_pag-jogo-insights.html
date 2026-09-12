@@ -1,0 +1,544 @@
+<div class="swiper-slide">
+    <div class="doma-pagina" id="pag-jogo-insights" style="background: linear-gradient(135deg, #f0f9ff, #f8fafc); height: 100dvh; overflow-y: auto; padding: 4vh 15px;"><div class="btn-voltar-sumario" onclick="irParaTela('pag-mapa-final')">☰</div>
+        <div class="wrapper-isolado" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-bottom: 50px;">
+            
+            <div class="doma-site-intro" style="font-family: 'Nunito', sans-serif; color: #334155; max-width: 550px; margin: 0 auto; text-align: left; line-height: 1.6;">
+                <h2 style="font-family: 'Fredoka', sans-serif; color: #0ea5e9; text-align: center; margin-top: 0; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">🎁 O Seu Presente: A Jornada pelos Insights</h2>
+                <p><b>Parabéns, Domador(a)!</b> Você concluiu todas as etapas de investigação com extrema coragem e maestria.</p>
+                <p>Como <b>recompensa</b> por todo o seu esforço e dedicação neste Volume I, preparamos este prêmio especial. O jogo abaixo é o seu momento de descompressão e alegria. Divirta-se alinhando as peças, ganhe <i>Insights</i> e aproveite para acumular ainda mais pontos e bônus antes de finalizar!</p>
+                <p>Aproveite o seu presente, você mereceu.</p>
+            </div>
+
+            <br><br>
+
+            <div id="doma-game-component">
+                
+
+                <audio id="SND_MOVE_REAL" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" preload="auto"></audio>
+                <audio id="SND_MATCH_REAL" src="https://assets.mixkit.co/active_storage/sfx/1118/1118-preview.mp3" preload="auto"></audio>
+                <audio id="SND_BOOM" src="https://assets.mixkit.co/active_storage/sfx/2747/2747-preview.mp3" preload="auto"></audio>
+
+                <div class="doma-game-header">
+                    <img src="https://i.postimg.cc/rmSnWK9z/Captura-de-tela-2025-09-27-133248.png" class="doma-header-mascot" alt="Mascote Doma">
+                    <h1 class="doma-game-title">Jornada<br>dos Insights</h1>
+                </div>
+
+                <div class="box-tutorial">
+                    <h3>COMO JOGAR:</h3>
+                    <ul>
+                        <li><b>Insights (Sua Moeda):</b> Arraste e alinhe 3 ou mais símbolos iguais para gerar um <b>Insight</b> (clareza).</li>
+                        <li><b>A Recompensa:</b> Ao atingir a meta, você ganha uma <b>Mensagem de Sabedoria</b> reveladora!</li>
+                        <li><b>A Catarse DOMA:</b> A cada 10 eliminações, surge o <b>Monstrinho DOMA</b>. Ele é o Coringa: completa qualquer sequência e explode os bloqueios ao redor!</li>
+                        <li><b>Dica de Ouro:</b> Se parar por 10 segundos, as peças vão brilhar para te ajudar.</li>
+                    </ul>
+                </div>
+
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-jogo">
+    <div class="placar-fase">
+        <span id="DISPLAY_NIVEL" class="fase-label">NÍVEL 1</span>
+        <span id="DISPLAY_META" class="meta-label">META: 500</span>
+    </div>
+
+    <div class="arena-wrapper">
+        <div id="GRID_DOMA_ARENA"></div>
+
+        <div id="LEVEL_UP_SCREEN" class="in-arena-overlay">
+            <img src="https://i.postimg.cc/rmSnWK9z/Captura-de-tela-2025-09-27-133248.png" class="doma-mascote-vitoria" alt="Monstrinho Doma">
+            <h1>PARABÉNS!</h1>
+            <p id="TEXTO_MOTIVACIONAL">"Onde estava o Id, deve estar o Ego."</p>
+            <button class="btn-action" onclick="continueGame()">PRÓXIMO NÍVEL</button>
+        </div>
+
+        <div id="GAME_OVER_SCREEN" class="in-arena-overlay">
+            <h1>BLOQUEIO!</h1>
+            <p>Sua mente entrou em bloqueio.<br>Não há mais movimentos possíveis.</p>
+            <button class="btn-action" onclick="restartGame()" style="background: linear-gradient(to bottom, #ef4444, #b91c1c); box-shadow: 0 6px 0 #7f1d1d, 0 10px 15px rgba(0,0,0,0.2);">REINICIAR</button>
+        </div>
+    </div>
+
+    <div class="center-score">
+        <div class="score-panel">
+            <small>INSIGHTS OBTIDOS</small>
+            <span id="DISPLAY_SCORE">0</span>
+        </div>
+    </div>
+
+    <button class="btn-doma pulse-btn" style="background: #1e293b; color: white; width: 100%; border: none; padding: 18px; border-radius: 50px; font-weight: 900; margin-top: 30px; font-size: 1rem; text-transform: uppercase; box-sizing: border-box;" onclick="if(typeof swiperDoma !== 'undefined') { swiperDoma.slideNext(); } else { try { mudarPagina(1); } catch(e){} }">
+        AVANÇAR PARA O ENCERRAMENTO ➔
+    </button>
+
+    <script>
+    (function() {
+        // 1. BANCO DE DADOS DE PEÇAS COMPLETO
+        const CONFIG_PECAS = [
+            { id: 'clareza', src: 'https://cdn-icons-png.flaticon.com/128/11499/11499753.png' },
+            { id: 'amor', src: 'https://cdn-icons-png.flaticon.com/128/2107/2107845.png' },
+            { id: 'dinheiro', src: 'https://cdn-icons-png.flaticon.com/128/2489/2489756.png' },
+            { id: 'saude', src: 'https://cdn-icons-png.flaticon.com/128/822/822118.png' },
+            { id: 'trabalho', src: 'https://cdn-icons-png.flaticon.com/128/10433/10433048.png' },
+            { id: 'tempo', src: 'https://cdn-icons-png.flaticon.com/128/2838/2838586.png' },
+            { id: 'familia', src: 'https://cdn-icons-png.flaticon.com/128/6012/6012555.png' },
+            { id: 'estudo', src: 'https://cdn-icons-png.flaticon.com/128/3344/3344383.png' },
+            { id: 'paz', src: 'https://cdn-icons-png.flaticon.com/128/3041/3041113.png' },
+            { id: 'energia', src: 'https://cdn-icons-png.flaticon.com/128/606/606795.png' },
+            { id: 'natureza', src: 'https://cdn-icons-png.flaticon.com/128/3004/3004164.png' },
+            { id: 'viagem', src: 'https://cdn-icons-png.flaticon.com/128/2060/2060284.png' },
+            { id: 'arte', src: 'https://cdn-icons-png.flaticon.com/128/2970/2970068.png' },
+            { id: 'esporte', src: 'https://cdn-icons-png.flaticon.com/128/3144/3144795.png' },
+            { id: 'foco', src: 'https://cdn-icons-png.flaticon.com/128/1414/1414382.png' },
+            { id: 'alegria', src: 'https://cdn-icons-png.flaticon.com/128/742/742751.png' },
+            { id: 'sucesso', src: 'https://cdn-icons-png.flaticon.com/128/1006/1006555.png' },
+            { id: 'amizade', src: 'https://cdn-icons-png.flaticon.com/128/3128/3128313.png' },
+            { id: 'coragem', src: 'https://cdn-icons-png.flaticon.com/128/112/112368.png' },
+            { id: 'sabedoria', src: 'https://cdn-icons-png.flaticon.com/128/2232/2232688.png' }
+        ];
+
+        const PECA_CORINGA = { id: 'joker', src: 'https://i.postimg.cc/rmSnWK9z/Captura-de-tela-2025-09-27-133248.png' };
+
+        const FRASES_MOTIVACIONAIS = [
+            '"Olhe para dentro, para as suas profundezas, aprenda primeiro a conhecer-se." - Sigmund Freud',
+            '"Quem olha para fora sonha, quem olha para dentro desperta." - Carl Jung',
+            '"A mente é como um iceberg, flutua com apenas um sétimo de seu volume acima da água." - Sigmund Freud',
+            '"O que não resolvemos em nossa mente, o nosso corpo transforma em destino." - Carl Jung',
+            '"Conhecer suas próprias trevas é o melhor método para lidar com as trevas dos outros." - Carl Jung',
+            '"A inteligência é o único meio que possuímos para dominar os nossos instintos." - Sigmund Freud'
+        ];
+
+        let board = [], score = 0, faseAtual = 0, blockInput = false;
+        let activeIdx = null, startX, startY;
+        let currentGridSize = 5, currentPecasCount = 5, currentTotalCells = 25;
+        let idleTimer = null;
+        let eliminationCounter = 0; 
+        
+        const arena = document.getElementById('GRID_DOMA_ARENA');
+        const sndMove = document.getElementById('SND_MOVE_REAL');
+        const sndMatch = document.getElementById('SND_MATCH_REAL');
+        const sndBoom = document.getElementById('SND_BOOM');
+        const gameOverScreen = document.getElementById('GAME_OVER_SCREEN');
+        const levelUpScreen = document.getElementById('LEVEL_UP_SCREEN');
+
+        function calculatePhaseConfig(levelIdx) {
+            let n = levelIdx + 1;
+            let grid = n < 6 ? 4 + n : 10;
+            let imgs = n < 6 ? 4 + n : 10 + (n - 6);
+            let meta = 500;
+            if(n === 2) meta = 1500;
+            if(n === 3) meta = 3500;
+            if(n === 4) meta = 7000;
+            if(n >= 5) meta = 7000 + ((n - 4) * 6000); 
+            if (imgs > CONFIG_PECAS.length) imgs = CONFIG_PECAS.length;
+            return { grid, imagens: imgs, meta, nome: "NÍVEL " + n };
+        }
+
+        function setupGame() {
+            let config = calculatePhaseConfig(faseAtual);
+            currentGridSize = config.grid;
+            currentPecasCount = config.imagens;
+            currentTotalCells = currentGridSize * currentGridSize;
+
+            arena.style.gridTemplateColumns = `repeat(${currentGridSize}, 1fr)`;
+            arena.style.gridTemplateRows = `repeat(${currentGridSize}, 1fr)`;
+            
+            document.getElementById('DISPLAY_NIVEL').innerText = config.nome;
+            document.getElementById('DISPLAY_META').innerText = "META: " + config.meta;
+
+            board = [];
+            arena.innerHTML = '';
+            let pool = CONFIG_PECAS.slice(0, currentPecasCount);
+
+            for(let i=0; i<currentTotalCells; i++) {
+                let randomId;
+                do {
+                    randomId = pool[Math.floor(Math.random() * pool.length)].id;
+                    board[i] = randomId;
+                } while (checkImmediateMatches(i));
+
+                let slot = document.createElement('div');
+                slot.className = 'tile-container';
+                slot.dataset.idx = i;
+
+                let img = document.createElement('img');
+                img.className = 'peca-ativa';
+                img.src = pool.find(p => p.id === randomId).src;
+                img.draggable = false;
+                
+                slot.appendChild(img);
+                slot.onpointerdown = (e) => startDrag(e, i);
+                arena.appendChild(slot);
+            }
+            window.onpointermove = moveDrag;
+            window.onpointerup = endDrag;
+
+            if(!checkPossibleMoves()) triggerGameOver();
+            else resetIdleTimer();
+        }
+
+        function checkImmediateMatches(i) {
+            let row = Math.floor(i / currentGridSize), col = i % currentGridSize;
+            if (col >= 2 && board[i] === board[i-1] && board[i] === board[i-2]) return true;
+            if (row >= 2 && board[i] === board[i-currentGridSize] && board[i] === board[i-currentGridSize*2]) return true;
+            return false;
+        }
+
+        function isMatch(a, b, c) {
+            if (!a || !b || !c) return false;
+            let ids = [a, b, c];
+            let nonJokers = ids.filter(id => id !== 'joker');
+            if (nonJokers.length === 0) return true; 
+            return nonJokers.every(val => val === nonJokers[0]);
+        }
+
+        function scanMatches() {
+            let matchesFound = new Set();
+            for (let i = 0; i < currentTotalCells; i++) {
+                if (i % currentGridSize < currentGridSize - 2) {
+                    if (isMatch(board[i], board[i+1], board[i+2])) {
+                        [i, i+1, i+2].forEach(idx => matchesFound.add(idx));
+                    }
+                }
+                if (i < currentTotalCells - (currentGridSize * 2)) {
+                    if (isMatch(board[i], board[i+currentGridSize], board[i+currentGridSize*2])) {
+                        [i, i+currentGridSize, i+currentGridSize*2].forEach(idx => matchesFound.add(idx));
+                    }
+                }
+            }
+            return Array.from(matchesFound);
+        }
+
+        function handleMatches(matchIndices) {
+            let jokersInMatch = matchIndices.filter(idx => board[idx] === 'joker');
+            let explosionArea = new Set(matchIndices);
+
+            if (jokersInMatch.length > 0) {
+                if(sndBoom) sndBoom.play();
+                jokersInMatch.forEach(jIdx => {
+                    let r = Math.floor(jIdx / currentGridSize);
+                    let c = jIdx % currentGridSize;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            let nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < currentGridSize && nc >= 0 && nc < currentGridSize) {
+                                let targetIdx = nr * currentGridSize + nc;
+                                explosionArea.add(targetIdx);
+                                arena.children[targetIdx].classList.add('area-blast-flash');
+                            }
+                        }
+                    }
+                });
+            } else {
+                if(sndMatch) sndMatch.play();
+            }
+
+            explosionArea.forEach(idx => {
+                arena.children[idx].firstChild.classList.add('insight-anim');
+                board[idx] = null;
+            });
+
+            score += explosionArea.size * 10;
+            eliminationCounter += matchIndices.length; 
+            document.getElementById('DISPLAY_SCORE').innerText = score;
+            
+            let config = calculatePhaseConfig(faseAtual);
+            if (score >= config.meta) {
+                setTimeout(triggerLevelUp, 700);
+                return; 
+            }
+
+            setTimeout(() => {
+                applyGravity();
+                refreshUI();
+                let chain = scanMatches();
+                if (chain.length > 0) handleMatches(chain);
+                else {
+                    if(!checkPossibleMoves()) triggerGameOver();
+                    else {
+                        blockInput = false;
+                        resetIdleTimer();
+                    }
+                }
+            }, 600);
+        }
+
+        function applyGravity() {
+            let pool = CONFIG_PECAS.slice(0, currentPecasCount);
+            for (let col = 0; col < currentGridSize; col++) {
+                let emptySpaces = 0;
+                for (let row = currentGridSize - 1; row >= 0; row--) {
+                    let i = row * currentGridSize + col;
+                    if (board[i] === null) emptySpaces++;
+                    else if (emptySpaces > 0) {
+                        board[i + (emptySpaces * currentGridSize)] = board[i];
+                        board[i] = null;
+                    }
+                }
+                for (let row = 0; row < emptySpaces; row++) {
+                    let nextId;
+                    if (eliminationCounter >= 10) {
+                        nextId = 'joker';
+                        eliminationCounter -= 10;
+                    } else {
+                        nextId = pool[Math.floor(Math.random() * pool.length)].id;
+                    }
+                    board[row * currentGridSize + col] = nextId;
+                }
+            }
+        }
+
+        function refreshUI() {
+            const registry = [...CONFIG_PECAS, PECA_CORINGA];
+            for (let i = 0; i < currentTotalCells; i++) {
+                let img = arena.children[i].firstChild;
+                let data = registry.find(p => p.id === board[i]);
+                img.src = data.src;
+                img.classList.remove('insight-anim', 'peca-coringa');
+                if (board[i] === 'joker') img.classList.add('peca-coringa');
+                img.style.transform = '';
+                arena.children[i].classList.remove('area-blast-flash');
+            }
+        }
+
+        function startDrag(e, idx) {
+            if (blockInput) return;
+            resetIdleTimer();
+            activeIdx = idx;
+            startX = e.clientX;
+            startY = e.clientY;
+            arena.children[idx].firstChild.classList.add('dragging-state');
+            if(sndMove) sndMove.play();
+        }
+
+        function moveDrag(e) {
+            if (activeIdx === null) return;
+            let img = arena.children[activeIdx].firstChild;
+            let dx = e.clientX - startX, dy = e.clientY - startY;
+            let limit = arena.offsetWidth / currentGridSize * 0.8;
+            img.style.transform = `translate(${Math.max(-limit, Math.min(limit, dx))}px, ${Math.max(-limit, Math.min(limit, dy))}px)`;
+        }
+
+        function endDrag(e) {
+            if (activeIdx === null) return;
+            let dx = e.clientX - startX, dy = e.clientY - startY;
+            let threshold = (arena.offsetWidth / currentGridSize) * 0.4; 
+            let targetIdx = null;
+
+            if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) {
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    if (dx > 0 && activeIdx % currentGridSize < currentGridSize - 1) targetIdx = activeIdx + 1;
+                    else if (dx < 0 && activeIdx % currentGridSize > 0) targetIdx = activeIdx - 1;
+                } else {
+                    if (dy > 0 && activeIdx < currentTotalCells - currentGridSize) targetIdx = activeIdx + currentGridSize;
+                    else if (dy < 0 && activeIdx >= currentGridSize) targetIdx = activeIdx - currentGridSize;
+                }
+            }
+
+            arena.children[activeIdx].firstChild.classList.remove('dragging-state');
+            arena.children[activeIdx].firstChild.style.transform = '';
+
+            if (targetIdx !== null) executeSwap(activeIdx, targetIdx);
+            else resetIdleTimer();
+            activeIdx = null;
+        }
+
+        function executeSwap(i1, i2) {
+            blockInput = true;
+            clearTimeout(idleTimer);
+            let v1 = board[i1], v2 = board[i2];
+            board[i1] = v2; board[i2] = v1;
+            refreshUI();
+
+            setTimeout(() => {
+                let matches = scanMatches();
+                if (matches.length > 0) handleMatches(matches);
+                else {
+                    board[i1] = v1; board[i2] = v2;
+                    refreshUI();
+                    blockInput = false;
+                    resetIdleTimer();
+                }
+            }, 300);
+        }
+
+        function resetIdleTimer() {
+            clearTimeout(idleTimer);
+            document.querySelectorAll('.hint-active').forEach(el => el.classList.remove('hint-active'));
+            if(!blockInput) idleTimer = setTimeout(showHint, 10000);
+        }
+
+        function showHint() {
+            if(blockInput) return;
+            let move = getOneValidMove();
+            if(move) {
+                arena.children[move[0]].firstChild.classList.add('hint-active');
+                arena.children[move[1]].firstChild.classList.add('hint-active');
+            }
+        }
+
+        function getOneValidMove() {
+            for (let i = 0; i < currentTotalCells; i++) {
+                if (i % currentGridSize < currentGridSize - 1) {
+                    if (simulateSwap(i, i + 1)) return [i, i + 1];
+                }
+                if (Math.floor(i / currentGridSize) < currentGridSize - 1) {
+                    if (simulateSwap(i, i + currentGridSize)) return [i, i + currentGridSize];
+                }
+            }
+            return null;
+        }
+
+        function simulateSwap(i1, i2) {
+            let t1 = board[i1], t2 = board[i2];
+            board[i1] = t2; board[i2] = t1;
+            let hasMatch = scanMatches().length > 0;
+            board[i1] = t1; board[i2] = t2;
+            return hasMatch;
+        }
+
+        function fireConfetti() {
+            const colors = ['#facc15', '#0ea5e9', '#f97316', '#ec4899', '#10b981'];
+            for(let i=0; i<50; i++) {
+                let conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + '%';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                conf.style.animationDelay = (Math.random() * 0.5) + 's';
+                levelUpScreen.appendChild(conf);
+            }
+        }
+
+        function triggerLevelUp() {
+            blockInput = true;
+            clearTimeout(idleTimer);
+            
+            for (let i = 0; i < currentTotalCells; i++) {
+                setTimeout(() => {
+                    if(arena.children[i]) arena.children[i].firstChild.classList.add('fall-down');
+                }, Math.random() * 400);
+            }
+
+            setTimeout(() => {
+                document.getElementById('TEXTO_MOTIVACIONAL').innerText = FRASES_MOTIVACIONAIS[faseAtual % FRASES_MOTIVACIONAIS.length];
+                
+                // MÁGICA 1: Tira o modal de dentro do slide e gruda na tela do celular
+                document.body.appendChild(levelUpScreen); 
+                
+                levelUpScreen.style.display = 'flex';
+                fireConfetti();
+            }, 1200);
+        }
+
+        window.continueGame = function() {
+            document.querySelectorAll('.confetti').forEach(e => e.remove());
+            levelUpScreen.style.display = 'none';
+            faseAtual++;
+            blockInput = false;
+            setupGame();
+        };
+
+        function checkPossibleMoves() { return getOneValidMove() !== null; }
+
+        function triggerGameOver() {
+            blockInput = true;
+            clearTimeout(idleTimer);
+            
+            // Tira o modal de Game Over do slide também
+            document.body.appendChild(gameOverScreen);
+            
+            gameOverScreen.style.display = 'flex';
+        }
+
+        window.restartGame = function() {
+            score = 0; faseAtual = 0; eliminationCounter = 0;
+            document.getElementById('DISPLAY_SCORE').innerText = score;
+            gameOverScreen.style.display = 'none';
+            blockInput = false;
+            setupGame();
+        };
+
+        window.onload = setupGame;
+    })();
+    </script>
+</div></div></div></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

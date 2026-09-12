@@ -1764,12 +1764,23 @@ function tocarSireneRoleta() {
 
     function domaAtivarScripts(container) {
         // innerHTML não executa <script> embutidos; recriamos cada um para forçar a execução.
+        // Ligamos a bandeira de supressão: os elementos deste capítulo já
+        // estão TODOS no DOM neste ponto (acabamos de injetar o HTML dele),
+        // então qualquer DOMContentLoaded que esses scripts registrem vai
+        // encontrar seus elementos de cara — não precisa (e não deve) ser
+        // re-executado quando outro capítulo carregar depois.
+        if (typeof window.__domaSuprimirRegistroRefire !== 'undefined') {
+            window.__domaSuprimirRegistroRefire = true;
+        }
         container.querySelectorAll('script').forEach(function (antigo) {
             const novo = document.createElement('script');
             for (const attr of antigo.attributes) novo.setAttribute(attr.name, attr.value);
             novo.textContent = antigo.textContent;
             antigo.replaceWith(novo);
         });
+        if (typeof window.__domaSuprimirRegistroRefire !== 'undefined') {
+            window.__domaSuprimirRegistroRefire = false;
+        }
     }
 
     function domaCarregarCapitulo(chunkIndex) {

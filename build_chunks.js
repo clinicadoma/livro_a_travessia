@@ -242,6 +242,24 @@ function main() {
     });
   }
 
+  // Efeito colateral da promoção: popups que viram parte do capítulo 0
+  // passam a existir mais "cedo" no DOM do que popups que ainda moram no
+  // capítulo original deles. Quando dois popups compartilham a MESMA
+  // classe (ex: .doma-popup-tela, todos com z-index 99990), o navegador
+  // desempata por ORDEM NO DOM — e no arquivo original, um popup como o
+  // de convite VIP aparecia DEPOIS de outros (ex: o do Plano Tático),
+  // então sempre vencia essa disputa e ficava por cima. Ao promovê-lo
+  // para o capítulo 0 (que carrega primeiro), ele passou a aparecer
+  // ANTES no DOM, e portanto perde essa disputa quando os dois aparecem
+  // juntos. Corrigimos reforçando o z-index inline de cada popup
+  // promovido, garantindo que ele sempre vença, como vencia antes.
+  promoverAoZero.forEach((el) => {
+    const zAtual = parseInt(el.style.zIndex || "0", 10) || 0;
+    if (zAtual < 999990) {
+      el.style.setProperty("z-index", "999990", "important");
+    }
+  });
+
   console.log(`capítulos promovidos a core.js: ${[...coreIdx].sort((a, b) => a - b).join(", ")}`);
   [...coreIdx].sort((a, b) => a - b).forEach((ci) => {
     const r = motivos[ci];

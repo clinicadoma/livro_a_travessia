@@ -1,70 +1,67 @@
 # Clínica Doma — versão modular com carregamento sob demanda
 
-## Correção desta versão: animações não tocavam (sem sombra, sem rotação)
+## Novo: modo de teste (testar um slide fora do Wix)
 
-**Causa raiz (a mais sutil até agora):** uma das tags `<style>` do arquivo
-original está malformada — falta o `</style>` dela no lugar certo, então
-o navegador "engole" um bloco de `<script>` inteiro (o sistema de desenho
-do Tribunal Interno) como se fosse texto CSS. No arquivo original isso é
-inofensivo, porque cada `<style>` é uma folha de estilo **independente**;
-o erro fica contido ali dentro.
+O `wix-loader.html` não depende de nada específico do Wix — ele busca
+tudo do GitHub e só usa `postMessage` de forma opcional. Isso significa
+que dá pra abrir esse arquivo direto no navegador, sem precisar publicar
+nada, e ele vai carregar o livro normalmente.
 
-O problema apareceu porque, para carregar todo o CSS de uma vez só (em
-vez de ficar buscando pedaço por pedaço), eu **juntei** todas as folhas
-de estilo originais num arquivo único. Isso uniu o que antes eram
-contextos de análise CSS separados — e o erro de uma folha passou a
-"vazar" e corromper a leitura de TUDO que vinha depois dela no arquivo
-combinado, inclusive a animação do botão "Iniciar Travessia" (e
-potencialmente outras).
+Pra pular direto pra um slide específico (sem precisar navegar por tudo
+manualmente) e sem precisar liberar VIP na mão, use parâmetros na URL:
 
-**Corrigido:** o loader agora recria cada bloco de estilo original como
-sua própria tag `<style>` separada — continua buscando tudo num único
-arquivo (não perde a vantagem de carregar de uma vez), mas isola cada
-bloco na hora de aplicar, exatamente como era no arquivo original.
+```
+wix-loader.html?teste=1&ir=pag-jogo-insights
+```
 
-Testei de forma ampla: comparei as 101 animações usadas no arquivo
-original contra os `@keyframes` que o navegador consegue reconhecer
-depois dessa correção. Encontrei mais 3 nomes de animação que **nunca
-tiveram um `@keyframes` definido em lugar nenhum** — `flutuarBalao`,
-`flutuar` e `pulsarVivo`. Isso já era assim no arquivo original (bug
-pré-existente, sem relação com a modularização); não mexi nisso, mas
-fica registrado caso você queira revisar.
+- `?teste=1` — liga o modo de teste: libera o VIP e ignora a trava de
+  "página ainda não alcançada", permitindo pular pra qualquer slide.
+- `?ir=ID` — depois de carregar, pula direto pra esse id (o mesmo id
+  usado em `irParaTela('...')` no código, ou visível no `manifest.json`).
+
+Exemplo prático: baixe `wix-loader.html`, abra ele duas vezes no
+navegador (dois abas/janelas), uma com `?teste=1&ir=pag-jogo-insights` e
+outra com `?teste=1&ir=slide-final-conclusao`, pra comparar duas telas
+lado a lado sem precisar navegar manualmente em nenhuma delas.
+
+Sem esses parâmetros, o arquivo funciona exatamente como antes (começa
+do zero, `pag-1`, com as travas de progresso normais).
+
+## Correções desta versão
+
+- **Quadro do jogo "Jornada dos Insights" espremido:** uma correção
+  anterior (a que restaurou o scroll do Espelho da Realidade) estava
+  sendo aplicada tanto a páginas normais quanto a popups. Páginas normais
+  já rolam corretamente por conta própria; aplicar a mesma regra nelas
+  fazia o flexbox encolher o conteúdo (como esse jogo) em vez de deixar
+  a página crescer. Agora a correção só se aplica a popups.
 
 ## Correções anteriores (recapitulando)
 
-- **Modal VIP atrás do Plano Tático:** popups promovidos ao capítulo
-  inicial agora recebem z-index reforçado, restaurando a prioridade que
-  tinham no arquivo original.
-- **`#doma-app-wrapper` recriado** em tempo de execução (contexto de
-  empilhamento correto entre páginas e popups).
-- **4 popups** (loja, "livro" revelável, VIP, senha) promovidos ao
-  capítulo inicial — com detecção automática de novas dependências que
-  isso revela (ex: `abrirModalSenhaVIP`).
-- **Quebra-cache automático** em toda busca — elimina o problema
-  recorrente de cache do jsDelivr.
-- **Contagem de páginas** via parser HTML real (jsdom), não regex.
+- Duplicação de peças no jogo de arrastar — corrigida (dependia de
+  atualizar tanto o `wix-loader.html` quanto o `js/core.js` no GitHub).
+- Scroll do Espelho da Realidade — corrigido usando os mesmos seletores
+  por ID que o arquivo original usa para travar o scroll ali.
+- Sobreposição do rótulo dos cestos com a legenda de progresso.
+- Fonte dos arquivos trocada para `raw.githubusercontent.com`.
+- Popups promovidos ao capítulo inicial com z-index reforçado.
+- `#doma-app-wrapper` recriado em tempo de execução.
 
 ## Como colocar no ar
 
 1. Suba `css/`, `js/`, `html/` e `manifest.json` para a raiz do
    repositório `livro_a_travessia` no GitHub.
-2. No componente HTML do Wix: apague o conteúdo atual, salve vazio, cole
-   o `wix-loader.html` deste pacote, clique em aplicar/salvar no próprio
-   painel do componente, e publique.
-3. Teste em aba anônima (o quebra-cache automático já elimina a
-   necessidade de desabilitar cache manualmente).
-
-## Pontos para testar
-
-- **Animação do botão "Iniciar Travessia"** (sombra crescendo + leve
-  rotação) — e de outros botões pulsantes pelo livro.
-- **Modal VIP** por cima do slide "Seu Plano Tático".
-- Navegação geral, Retrato Falado, vitrola do capítulo 10.
+2. Cole o conteúdo de `wix-loader.html` no componente HTML do Wix
+   (apague o conteúdo atual, salve vazio, cole o novo, salve no painel
+   do componente, publique).
+3. Teste em aba anônima — ou use o modo de teste (acima) pra testar
+   telas específicas sem publicar nada.
 
 ## Arquivos deste pacote
 
 - `css/`, `js/`, `html/`, `manifest.json` — sobem para o GitHub.
-- `wix-loader.html` — cola no componente HTML do Wix.
+- `wix-loader.html` — cola no componente HTML do Wix (ou abre direto no
+  navegador pra testar, com os parâmetros `?teste=1&ir=ID`).
 - `build_chunks.js` / `new_engine.js` / `montar_tudo.sh` — ferramentas
   para reprocessar o livro original no futuro
   (`./montar_tudo.sh original.html saida/`, requer Node.js + `jsdom`).

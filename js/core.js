@@ -2027,7 +2027,7 @@ function tocarSireneRoleta() {
 
         let proximaPagina = (pagAtiva + dir + total) % total;
 
-        if (proximaPagina >= indexTribunal && !isUsuarioPremium) {
+        if (proximaPagina >= indexTribunal && !isUsuarioPremium && !window.__domaModoTeste) {
             document.getElementById('slide-paywall-vip').style.display = 'flex';
             return;
         }
@@ -2072,11 +2072,15 @@ function tocarSireneRoleta() {
         if (alvoIndex === -1) return; // id desconhecido: nada a fazer
 
         // --- NOVA TRAVA JAVASCRIPT: IMPEDE A ABERTURA DE ITENS AINDA NÃO ALCANÇADOS ---
-        if (idAlvo !== 'pag-3' && idAlvo !== 'pag-roleta' && alvoIndex > maxPaginaAlcancada) {
+        // (ignorada no modo de teste, pra permitir pular direto pra qualquer slide)
+        if (!window.__domaModoTeste && idAlvo !== 'pag-3' && idAlvo !== 'pag-roleta' && alvoIndex > maxPaginaAlcancada) {
             return; // Corta a ação na raiz. Mesmo que clique, não abre!
         }
+        if (window.__domaModoTeste && alvoIndex > maxPaginaAlcancada) {
+            maxPaginaAlcancada = alvoIndex;
+        }
 
-        if (alvoIndex >= indexTribunal && !isUsuarioPremium) {
+        if (alvoIndex >= indexTribunal && !isUsuarioPremium && !window.__domaModoTeste) {
             document.getElementById('slide-paywall-vip').style.display = 'flex';
             return;
         }

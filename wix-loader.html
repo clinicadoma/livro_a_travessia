@@ -24,28 +24,45 @@
     var GH_REPO = "livro_a_travessia";
     var GH_REF  = "main";
 
-    var BASE_REPO  = "https://cdn.jsdelivr.net/gh/" + GH_USER + "/" + GH_REPO + "@" + GH_REF + "/";
+    // Usamos raw.githubusercontent.com em vez do jsDelivr. O jsDelivr nos
+    // mordeu repetidas vezes com cache "preso" por horas numa referência
+    // de branch como "main", mesmo com quebra-cache na URL. O
+    // raw.githubusercontent.com libera CORS (necessário pra buscar de
+    // dentro do iframe do Wix) e usa um cache bem mais curto (5 minutos),
+    // que o quebra-cache abaixo ainda assim ignora por completo.
+    var BASE_REPO  = "https://raw.githubusercontent.com/" + GH_USER + "/" + GH_REPO + "/" + GH_REF + "/";
 
     // ======================================================
     // QUEBRA-CACHE AUTOMÁTICO
     //
-    // O jsDelivr guarda em cache o conteúdo de uma branch como "main"
-    // por várias horas (às vezes mais). Isso já causou 3 rodadas de
-    // "atualizei o GitHub mas o site continua com a versão antiga".
-    // Em vez de depender de travar num commit específico toda vez que
-    // algo muda (o que exige um passo manual extra a cada atualização),
-    // colamos um parâmetro diferente a cada carregamento de página em
-    // TODAS as URLs buscadas — isso faz o jsDelivr (e o navegador)
-    // tratarem cada carregamento como uma URL nova, sempre buscando o
-    // conteúdo mais recente na origem.
+    // Colamos um parâmetro diferente a cada carregamento de página em
+    // TODAS as URLs buscadas — isso faz qualquer camada de cache no meio
+    // do caminho (CDN ou navegador) tratar cada carregamento como uma URL
+    // nova, sempre buscando o conteúdo mais recente na origem.
     //
     // Custo: cada visita busca os arquivos "quentes" (sem cache), então
-    // fica um pouco mais lento que o cache ideal do jsDelivr — mas para
-    // esse projeto, confiabilidade importa mais do que os milissegundos
-    // economizados por um CDN em cache.
+    // fica um pouco mais lento do que um CDN em cache normalmente
+    // permitiria — mas para esse projeto, confiabilidade importa mais do
+    // que os milissegundos economizados.
     // ======================================================
     var CACHE_BUST = "?_cb=" + Date.now();
     console.log("[doma-loader] quebra-cache desta carga:", CACHE_BUST);
+
+    // ======================================================
+    // MODO DE TESTE — para testar um slide específico fora do Wix.
+    // Abra este arquivo direto no navegador com parâmetros na URL, ex:
+    //   wix-loader.html?teste=1&ir=pag-jogo-insights
+    // ?teste=1   -> libera VIP e ignora a trava de "página ainda não
+    //               alcançada", permitindo pular pra qualquer slide.
+    // ?ir=ID     -> depois de carregar, pula direto para esse id.
+    // ======================================================
+    var paramsURL = new URLSearchParams(window.location.search);
+    var modoTeste = paramsURL.get('teste') === '1';
+    var irDireto = paramsURL.get('ir');
+    if (modoTeste) {
+      window.__domaModoTeste = true;
+      console.log("[doma-loader] MODO DE TESTE ativado (VIP liberado, sem travas de progresso).");
+    }
 
     var BASE        = BASE_REPO;
     var BASE_CHUNKS = BASE + "html/chunks/";
@@ -69,12 +86,24 @@
     // ======================================================
     var callbacksDCL = [];
 
+    // Quando um capítulo lazy é injetado, seus próprios scripts são
+    // reativados (ver domaAtivarScripts em core.js). Nesse momento, TODO
+    // elemento daquele capítulo já existe — então qualquer DOMContentLoaded
+    // registrado por ESSE script específico sempre vai encontrar seus
+    // elementos de cara, na primeira tentativa. Registrar esses callbacks
+    // na lista de retentativa geral só serve para duplicá-los toda vez que
+    // outro capítulo carregar depois (ex: um jogo de arrastar-e-soltar que
+    // reanexa seus listeners de clique a cada capítulo novo, duplicando a
+    // ação). Por isso, core.js liga essa bandeira momentaneamente enquanto
+    // reativa os scripts de um capítulo específico.
+    window.__domaSuprimirRegistroRefire = false;
+
     function prepararAmbienteParaModulosLegados() {
       [document, window].forEach(function (alvo) {
         var addOriginal = alvo.addEventListener.bind(alvo);
         alvo.addEventListener = function (tipo, cb, opts) {
           if (tipo === 'DOMContentLoaded') {
-            callbacksDCL.push(cb);
+            if (!window.__domaSuprimirRegistroRefire) callbacksDCL.push(cb);
             setTimeout(function () { try { cb(); } catch (e) { /* elemento de um capítulo ainda não carregado */ } }, 0);
             return;
           }
@@ -91,7 +120,7 @@
           set: function (fn) {
             _onloadReal = fn;
             if (typeof fn === 'function') {
-              callbacksDCL.push(fn);
+              if (!window.__domaSuprimirRegistroRefire) callbacksDCL.push(fn);
               setTimeout(function () { try { fn(); } catch (e) { /* elemento de um capítulo ainda não carregado */ } }, 0);
             }
           }
@@ -139,6 +168,68 @@
         tag.textContent = bloco;
         document.head.appendChild(tag);
       });
+
+      // SCROLL INTERNO EM TODOS OS SLIDES.
+      // O arquivo original faz cada slide crescer (height:auto;
+      // overflow:visible) e depende do iframe do Wix esticar junto via
+      // postMessage. Essa dependência é frágil. Esta regra, injetada por
+      // último (então vence a cascata), trava a altura de cada slide
+      // ativo na altura visível do PRÓPRIO IFRAME (100dvh) e liga a
+      // rolagem interna — assim o usuário sempre consegue ver o slide
+      // inteiro, mesmo que a altura do iframe não acompanhe perfeitamente.
+      var overrideScroll = document.createElement('style');
+      overrideScroll.textContent = [
+        '.doma-pagina.ativa {',
+        '  height: 100dvh !important;',
+        '  max-height: 100dvh !important;',
+        '  overflow-y: auto !important;',
+        '  -webkit-overflow-scrolling: touch !important;',
+        '}',
+        '.doma-popup-tela {',
+        '  max-height: 100dvh !important;',
+        '  overflow-y: auto !important;',
+        '  -webkit-overflow-scrolling: touch !important;',
+        '}',
+        // O arquivo original tem DUAS regras (comentadas como "DESTRAVA
+        // TODOS OS MODAIS" e, literalmente, "MATA O SCROLL INTERNO") que
+        // usam SELETORES POR ID para forçar altura automática e
+        // overflow:visible numa lista específica de popups e seus
+        // conteúdos internos. Seletor por ID sempre vence seletor por
+        // classe (como .doma-popup-tela acima), não importa a ordem no
+        // documento — por isso repetimos aqui a MESMA lista de seletores,
+        // com a mesma especificidade, pra garantir que nossa regra vença.
+        '#CAMADA_ABSOLUTA_LIVRO, #modal-loja-doma, #slide-final-conclusao,',
+        '#slide-plano-acao, #slide-data-inicio, #slide-contrato {',
+        '  max-height: 100dvh !important;',
+        '  overflow-y: auto !important;',
+        '  -webkit-overflow-scrolling: touch !important;',
+        '}',
+        '#slide-final-conclusao .wrapper-isolado,',
+        '#modal-tatica-popup > div,',
+        '#modal-tatica-popup > div > div,',
+        '#modal-info-peca .alerta-clinico-modal,',
+        '#modal-dossie-doma > div,',
+        '#modal-dossie-doma > div > div,',
+        '#modal-limite-giros .alerta-piscante,',
+        '#modal-senha-vip > div,',
+        '#slide-plano-acao .cartao-popup,',
+        '#slide-data-inicio .cartao-popup,',
+        '#slide-contrato .cartao-popup,',
+        '.doma-popup-tela .wrapper-isolado {',
+        '  overflow-y: auto !important;',
+        '  max-height: 100% !important;',
+        '  -webkit-overflow-scrolling: touch !important;',
+        '}',
+        // TELA "QUAL É O DESTINO DESSA PEÇA": o rótulo flutuante de cada
+        // cesto (.cesto-label) fica 45px acima da caixa, mas a margem
+        // antes da área de cestos só dava 30px de folga — sobrepondo a
+        // legenda "0/10" da barra de progresso logo acima. Aumentamos essa
+        // margem para dar espaço de sobra ao rótulo flutuante.
+        '.area-cestos {',
+        '  margin-top: 65px !important;',
+        '}'
+      ].join('\n');
+      document.head.appendChild(overrideScroll);
     }
 
     function injetarJS(js) {
@@ -178,7 +269,12 @@
       // carteira, modal, primeiras páginas) e inicializa a navegação.
       // O 3º argumento é o mesmo quebra-cache, repassado para toda busca
       // de capítulo feita depois (dentro do core.js).
-      return window.__domaBootstrap(manifest, BASE_CHUNKS, CACHE_BUST);
+      return window.__domaBootstrap(manifest, BASE_CHUNKS, CACHE_BUST).then(function () {
+        if (irDireto) {
+          console.log("[doma-loader] pulando direto para:", irDireto);
+          return window.irParaTela(irDireto);
+        }
+      });
     })
     .catch(function (err) {
       console.error("Doma loader:", err);

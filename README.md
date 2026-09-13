@@ -1,40 +1,24 @@
 # Clínica Doma — versão modular com carregamento sob demanda
 
-## Mudanças nesta versão (padding em várias telas)
+## Mudança nesta versão
 
-Aplicado `padding-top: 70px !important;` em:
-- Quadro "O SEU DIÁRIO DE BORDO" (classe `.diario-base`)
-- `#acolhendo-polvo`
-- Página com a fala da Daniela sobre malabarismo de remédios
-- 34 `wrapper-isolado` distintos, cobrindo as telas: "DANIELA PINHEIROS
-  ACOLHE", "O Superpoder da Autonomia", "Lembre-se: o Polvo não define
-  quem você é", "Interação Clínica" (cor/sensação do cansaço), "Os
-  Desafios do Malabarista" e as 3 seguintes (Escudo Contra Pitacos,
-  Espelho Mais Gentil, Recriando a Espontaneidade), "Exercício:
-  Aliviando a Mochila", "O Espelho em Restauração", a tela do
-  diagnóstico que "trincou a imagem", "DANIELA ORIENTA" (permita-se
-  chorar), "Iluminando os Medos", "O Peso do Cuidado", "O Planner
-  Semanal", Semanas 2/3/4, as 2 telas do "Pote Dourado das Vitórias",
-  "Eternizar Vitória", "A Magia da Desidentificação", as 3 telas "O
-  Jogo da Verdade" e suas 3 mentiras (Autoestima, Dor Crônica,
-  Depressão), "Integração: O Trono é Seu", "A Balança do Seu Destino",
-  "O Milagre da Liderança", "Parar de guerrear...", "O Retorno ao que
-  nos Une" e "A Clínica Doma te ensinou o segredo".
-
-Aplicado `padding-top: 60px !important;` em:
-- `#DOM_EXPERIENCIA_COMPLETA`
-
-Aplicado `padding-top: 45px !important;` em:
-- As 5 telas "AVALIAÇÃO DAS PERDAS (1/5)" até "(5/5)"
+Havia 4 telas usando o quadro "O SEU DIÁRIO DE BORDO" (classe
+`.diario-base`) espalhadas pelo livro. O ajuste anterior (`padding-top:
+70px !important` na classe CSS) já valia para todas elas, mas a que
+fica logo antes de "Acolhendo o Polvo" (tema rosa, "Pausa para
+Reflexão: Dentre os sintomas, qual mais te assombra?") agora também
+recebeu o padding diretamente na sua `wrapper-isolado`, para garantir
+consistência com o padrão aplicado nas outras 34 telas.
 
 ## Mudanças anteriores (recapitulando)
 
-- Padding nos modais da segunda roleta (`modal-dossie-doma`,
-  `modal-limite-giros`).
+- Padding em 34 telas `wrapper-isolado` + quadro do Diário de Bordo +
+  `#acolhendo-polvo` + `#DOM_EXPERIENCIA_COMPLETA` + 5 telas "AVALIAÇÃO
+  DAS PERDAS".
+- Padding nos modais da segunda roleta.
 - Registrado o `padding-bottom: 10px` em `#slide-data-inicio` e
   `#slide-contrato`.
 - Corrigida a validação de `validarEAvancarData()`.
-- Botão cortado em `area-botoes-modal` — corrigido com `flex-shrink: 0`.
 - Modo de teste (`?teste=1&ir=ID`) via GitHub Pages.
 
 ## Como colocar no ar

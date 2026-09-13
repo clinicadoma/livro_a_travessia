@@ -1,47 +1,38 @@
 # Clínica Doma — versão modular com carregamento sob demanda
 
-## Novo: modo de teste (testar um slide fora do Wix)
+## Duas mudanças pontuais nesta versão (a seu pedido)
 
-O `wix-loader.html` não depende de nada específico do Wix — ele busca
-tudo do GitHub e só usa `postMessage` de forma opcional. Isso significa
-que dá pra abrir esse arquivo direto no navegador, sem precisar publicar
-nada, e ele vai carregar o livro normalmente.
+Na tela "Seu Plano Tático" (`#slide-plano-acao`):
 
-Pra pular direto pra um slide específico (sem precisar navegar por tudo
-manualmente) e sem precisar liberar VIP na mão, use parâmetros na URL:
+1. Removido `overflow: hidden;` de `.regra-ouro-box` (estava cortando
+   conteúdo).
+2. Removido o `padding-bottom: 150px !important;` que essa tela herdava
+   da classe `.doma-popup-tela` — adicionado um `padding-bottom: 0
+   !important;` direto nela, sem afetar os outros popups que também
+   usam essa classe (loja, VIP, etc. continuam com o padding original).
+
+## Modo de teste (testar um slide fora do Wix)
+
+Acesse o `wix-loader.html` publicado via GitHub Pages com parâmetros na
+URL, sem precisar publicar nada no Wix:
 
 ```
-wix-loader.html?teste=1&ir=pag-jogo-insights
+https://SEU-USUARIO.github.io/livro_a_travessia/wix-loader.html?teste=1&ir=pag-jogo-insights
 ```
 
-- `?teste=1` — liga o modo de teste: libera o VIP e ignora a trava de
-  "página ainda não alcançada", permitindo pular pra qualquer slide.
-- `?ir=ID` — depois de carregar, pula direto pra esse id (o mesmo id
-  usado em `irParaTela('...')` no código, ou visível no `manifest.json`).
+- `?teste=1` — libera o VIP e ignora a trava de "página ainda não
+  alcançada", permitindo pular pra qualquer slide.
+- `?ir=ID` — depois de carregar, pula direto pra esse id.
 
-Exemplo prático: baixe `wix-loader.html`, abra ele duas vezes no
-navegador (dois abas/janelas), uma com `?teste=1&ir=pag-jogo-insights` e
-outra com `?teste=1&ir=slide-final-conclusao`, pra comparar duas telas
-lado a lado sem precisar navegar manualmente em nenhuma delas.
-
-Sem esses parâmetros, o arquivo funciona exatamente como antes (começa
-do zero, `pag-1`, com as travas de progresso normais).
-
-## Correções desta versão
-
-- **Quadro do jogo "Jornada dos Insights" espremido:** uma correção
-  anterior (a que restaurou o scroll do Espelho da Realidade) estava
-  sendo aplicada tanto a páginas normais quanto a popups. Páginas normais
-  já rolam corretamente por conta própria; aplicar a mesma regra nelas
-  fazia o flexbox encolher o conteúdo (como esse jogo) em vez de deixar
-  a página crescer. Agora a correção só se aplica a popups.
+IDs disponíveis: veja a lista completa dos 36 capítulos e das páginas
+específicas dentro deles no `manifest.json` (campos `chunks[].start_id`
+e `pages[].id`).
 
 ## Correções anteriores (recapitulando)
 
-- Duplicação de peças no jogo de arrastar — corrigida (dependia de
-  atualizar tanto o `wix-loader.html` quanto o `js/core.js` no GitHub).
-- Scroll do Espelho da Realidade — corrigido usando os mesmos seletores
-  por ID que o arquivo original usa para travar o scroll ali.
+- Quadro do jogo "Jornada dos Insights" não é mais espremido.
+- Duplicação de peças no jogo de arrastar — corrigida.
+- Scroll do Espelho da Realidade — corrigido.
 - Sobreposição do rótulo dos cestos com a legenda de progresso.
 - Fonte dos arquivos trocada para `raw.githubusercontent.com`.
 - Popups promovidos ao capítulo inicial com z-index reforçado.
@@ -54,14 +45,14 @@ do zero, `pag-1`, com as travas de progresso normais).
 2. Cole o conteúdo de `wix-loader.html` no componente HTML do Wix
    (apague o conteúdo atual, salve vazio, cole o novo, salve no painel
    do componente, publique).
-3. Teste em aba anônima — ou use o modo de teste (acima) pra testar
-   telas específicas sem publicar nada.
+3. Teste em aba anônima — ou use o modo de teste (acima) via GitHub
+   Pages pra testar telas específicas sem publicar nada.
 
 ## Arquivos deste pacote
 
 - `css/`, `js/`, `html/`, `manifest.json` — sobem para o GitHub.
-- `wix-loader.html` — cola no componente HTML do Wix (ou abre direto no
-  navegador pra testar, com os parâmetros `?teste=1&ir=ID`).
+- `wix-loader.html` — cola no componente HTML do Wix (ou acessa direto
+  via GitHub Pages pra testar, com os parâmetros `?teste=1&ir=ID`).
 - `build_chunks.js` / `new_engine.js` / `montar_tudo.sh` — ferramentas
   para reprocessar o livro original no futuro
   (`./montar_tudo.sh original.html saida/`, requer Node.js + `jsdom`).

@@ -24,13 +24,13 @@
             </div>
 
             <!-- Recipiente da Roleta (Estrutura original com bordas mantida) -->
-            <div class="roleta-container" style="position: relative; display: flex; align-items: center; justify-content: center; border: 12px solid #bae6fd; border-radius: 50%; box-shadow: 0 10px 30px rgba(186, 230, 253, 0.6); background: white; margin: 0 auto; width: 320px; height: 320px; box-sizing: border-box;">
+            <div class="roleta-container" style="position: relative; display: flex; align-items: center; justify-content: center; border: 12px solid #bae6fd; border-radius: 50%; box-shadow: 0 10px 30px rgba(186, 230, 253, 0.6); background: white; margin: 0 auto; width: min(320px, 80vw); height: min(320px, 80vw); box-sizing: border-box;">
                 
                 <!-- Marcador de topo original -->
                 <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 100; width: 28px; height: 38px; background: #f43f5e; clip-path: polygon(100% 0, 0 0, 50% 100%);"></div>
                 
                 <!-- Canvas original intacto -->
-                <canvas id="canvasRoletaIntro" width="280" height="280" style="display: block; border-radius: 50%; border: 8px solid white; background: white; box-shadow: 0 0 0 4px #bae6fd;"></canvas>
+                <canvas id="canvasRoletaIntro" width="280" height="280" style="display: block; max-width: 100%; height: auto; border-radius: 50%; border: 8px solid white; background: white; box-shadow: 0 0 0 4px #bae6fd;"></canvas>
                 
                 <!-- Mascote central original intacto -->
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 50; background: white; border: 3px solid #bae6fd; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">

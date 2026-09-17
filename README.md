@@ -1,32 +1,39 @@
-# Clínica Doma — participação modular com carregamento sob demanda
+# Clínica Doma — versão modular com carregamento sob demanda
 
-## Mudança nesta versão: trava VIP movida do Laboratório para a tela do lago
+## Correção nesta versão: a trava do lago tinha 2 portas destrancadas
 
-A validação de VIP adicionada na versão anterior (no botão "MONTAR MEU
-MAPA DE TRATAMENTO" do Laboratório) foi **revertida**.
+Na versão anterior, eu só tinha travado o botão de texto "AVANÇAR ❯"
+dentro da própria cena do lago. Só que essa tela tem **duas outras
+formas** de avançar que eu não tinha coberto:
 
-A trava agora fica em outro ponto: na tela do lago (`pag-26`, a cena com
-a música/mensagem e a animação da cascata), no botão **"AVANÇAR ❯"**
-que aparece depois que a música termina (ou depois de 136 segundos,
-conforme o próprio código original já previa como tempo mínimo de
-audição). Se o usuário não for VIP, o paywall aparece nesse clique e ele
-não avança para a próxima tela (`slide-pecinhas`) — a parte gratuita do
-Mapa da Travessia agora termina exatamente aqui.
+1. A **seta de navegação padrão** do livro (a setinha `❯` fixa na
+   lateral, usada em toda a leitura) — ela já ficava escondida até a
+   música terminar, mas depois disso aparecia sem checar VIP nenhum.
+2. Pular direto pra uma página depois do lago **pelo menu/sumário**
+   (`irParaTela`) — sem passar pelo botão nem pela seta.
 
-Mesma técnica de antes: como esse trecho também vive numa IIFE isolada
-(separada do motor de navegação principal), a validação lê o VIP direto
-do `localStorage` (`acesso_vip_doma_liberado`), garantindo que funciona
-independente do escopo.
+Ambos os caminhos foram fechados:
 
-Testado com dois cenários automatizados: usuário sem VIP (clique em
-AVANÇAR bloqueado, paywall aparece) e usuário com VIP (avança
-normalmente para a próxima tela).
+- A seta de navegação padrão (`mudarPagina`) agora também bloqueia a
+  saída de `pag-26` sem VIP.
+- A seta fica **escondida** enquanto o usuário não for VIP (mesma
+  lógica visual das outras travas do livro), mesmo depois da música
+  terminar.
+- Pular via menu/sumário para qualquer página depois do lago
+  (`irParaTela`) também é bloqueado sem VIP.
+
+O botão de texto "AVANÇAR ❯" da própria cena continua com a checagem
+de antes.
+
+Testei os 3 caminhos possíveis de sair da tela (seta padrão, pulo via
+menu, botão da cena) tanto sem VIP (devem bloquear) quanto com VIP
+(devem liberar) — todos passaram.
 
 ## Mudanças anteriores (recapitulando)
 
+- Revertida a trava do Laboratório (Mapa da Travessia).
 - Correção de responsividade mobile nas duas roletas.
 - Padding em dezenas de telas específicas.
-- Corrigida a validação de `validarEAvancarData()`.
 - Modo de teste (`?teste=1&ir=ID`) via GitHub Pages.
 
 ## Como colocar no ar
@@ -34,10 +41,10 @@ normalmente para a próxima tela).
 1. Suba `css/`, `js/`, `html/` e `manifest.json` para a raiz do
    repositório `livro_a_travessia` no GitHub.
 2. O `wix-loader.html` não mudou nesta rodada.
-3. Pra testar o bloqueio: acesse sem VIP liberado e navegue até a tela
-   do lago (`pag-26`), ouça a música (ou espere/pule pra depois que ela
-   termina) e clique em "AVANÇAR ❯" — o paywall deve aparecer. Com VIP
-   liberado, deve avançar normalmente.
+3. Pra testar: acesse sem VIP, navegue até a tela do lago (`pag-26`),
+   deixe a música terminar (ou espere os 136s) e tente avançar tanto
+   pela seta lateral quanto pelo botão da cena — os dois devem mostrar
+   o paywall. Com VIP liberado, ambos devem funcionar normalmente.
 
 ## Arquivos deste pacote
 

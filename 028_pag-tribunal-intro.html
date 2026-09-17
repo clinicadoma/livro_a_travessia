@@ -1,0 +1,75 @@
+<div class="swiper-slide">
+    <div class="doma-pagina" id="pag-tribunal-intro" style="background: #ffffff; padding: 20px; display: flex; align-items: center; justify-content: center;"><div class="btn-voltar-sumario" onclick="irParaTela('pag-mapa-final')">☰</div>
+        <div class="trb_intro_box">
+            <!-- div class="trb_voz_fundo" style="top: 10%; left: 5%; animation-delay: 0s;">"A culpa é sua..."</div>
+            <div class="trb_voz_fundo" style="top: 15%; right: 5%; animation-delay: 2s;">"Não vai conseguir..."</div-->
+            
+            <div style="font-size: 60px; margin-bottom: 10px; animation: trb_flutuar 3s infinite;">⚖️</div>
+            <img src="https://i.postimg.cc/PJqmhzQw/sessao-aberta.png" style="width: 100%; max-width: 350px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            
+            <h2 class="trb_titulo_forte">O TRIBUNAL INTERNO</h2>
+            <p class="trb_texto_p">As vozes silenciadas agora vão falar. Prepare-se para o interrogatório dos ecos do seu passado.</p>
+            
+            <div class="trb_divider"></div>
+            <p style="color: #b45309; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 20px;">A fuga termina aqui.</p>
+            
+            <button class="btn-doma pulse-btn" onclick="trb_IniciarTribunal()">ENTRAR NO TRIBUNAL ➔</button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center; padding-top: 45px !important;">
+        <div class="trb_pergunta_card">
+            <span class="trb_tag">AVALIAÇÃO DAS PERDAS (1/5)</span>
+            <p class="trb_pergunta_txt">Qual é a dor mais profunda que você tenta esconder enquanto o sintoma dita as regras?</p>
+            <input type="text" id="trb_in_1" class="trb_input" placeholder="...">
+            <button class="btn-doma" onclick="trb_ValidarEAvancar(1)">CONFIRMAR RESPOSTA ➔</button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center; padding-top: 45px !important;">
+        <div class="trb_pergunta_card">
+            <span class="trb_tag">AVALIAÇÃO DAS PERDAS (2/5)</span>
+            <p class="trb_pergunta_txt">Quantos sonhos ou momentos de paz você já enterrou no "cemitério de desculpas" do sintoma?</p>
+            <input type="text" id="trb_in_2" class="trb_input" placeholder="...">
+            <button class="btn-doma" onclick="trb_ValidarEAvancar(2)">CONFIRMAR RESPOSTA ➔</button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center; padding-top: 45px !important;">
+        <div class="trb_pergunta_card">
+            <span class="trb_tag">AVALIAÇÃO DAS PERDAS (3/5)</span>
+            <p class="trb_pergunta_txt">Qual foi a última vez que você sentiu exaustão ou raiva de si mesmo por ter cedido a condução?</p>
+            <input type="text" id="trb_in_3" class="trb_input" placeholder="...">
+            <button class="btn-doma" onclick="trb_ValidarEAvancar(3)">CONFIRMAR RESPOSTA ➔</button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center; padding-top: 45px !important;">
+        <div class="trb_pergunta_card">
+            <span class="trb_tag">AVALIAÇÃO DAS PERDAS (4/5)</span>
+            <p class="trb_pergunta_txt">Se você não tivesse pavor do julgamento, o que faria AGORA para resgatar sua vida?</p>
+            <input type="text" id="trb_in_4" class="trb_input" placeholder="...">
+            <button class="btn-doma" onclick="trb_ValidarEAvancar(4)">CONFIRMAR RESPOSTA ➔</button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center; padding-top: 45px !important;">
+        <div class="trb_pergunta_card" style="border-top-color: #ea580c;">
+            <span class="trb_tag" style="color: #ea580c;">AVALIAÇÃO DAS PERDAS (5/5)</span>
+            <p class="trb_pergunta_txt">Se essa corrente quebrar, qual responsabilidade você terá que assumir sobre o seu destino?</p>
+            <input type="text" id="trb_in_5" class="trb_input" placeholder="..." style="border-color: #ea580c;">
+            <button class="btn-doma" style="background: #ea580c;" onclick="trb_ValidarEAvancar(5)">FINALIZAR INTERROGATÓRIO ➔</button>
+        </div>
+    </div>
+</div>
+

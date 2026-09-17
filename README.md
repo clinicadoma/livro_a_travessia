@@ -1,36 +1,31 @@
-# Clínica Doma — versão modular com carregamento sob demanda
+# Clínica Doma — participação modular com carregamento sob demanda
 
-## Mudança nesta versão: gate VIP no "Laboratório" do Mapa da Travessia
+## Mudança nesta versão: trava VIP movida do Laboratório para a tela do lago
 
-No fluxo O MAPA DA SUA TRAVESSIA → LABORATÓRIO:
-1. Usuário clica em "MAPEAR MEUS SINTOMAS"
-2. Escolhe de 1 a 3 sintomas
-3. Clica em "MONTAR MEU MAPA DE TRATAMENTO"
+A validação de VIP adicionada na versão anterior (no botão "MONTAR MEU
+MAPA DE TRATAMENTO" do Laboratório) foi **revertida**.
 
-Esse último clique agora **valida se o usuário é VIP**. Se não for, o
-paywall (`slide-paywall-vip`) aparece e o usuário não avança — a parte
-gratuita do Mapa da Travessia termina exatamente nesse ponto, como
-pedido.
+A trava agora fica em outro ponto: na tela do lago (`pag-26`, a cena com
+a música/mensagem e a animação da cascata), no botão **"AVANÇAR ❯"**
+que aparece depois que a música termina (ou depois de 136 segundos,
+conforme o próprio código original já previa como tempo mínimo de
+audição). Se o usuário não for VIP, o paywall aparece nesse clique e ele
+não avança para a próxima tela (`slide-pecinhas`) — a parte gratuita do
+Mapa da Travessia agora termina exatamente aqui.
 
-**Detalhe técnico:** essa seção ("dm...") vive numa IIFE JavaScript
-separada do motor de navegação principal, então não dava para reutilizar
-a variável `isUsuarioPremium` de lá diretamente (ela existe em cópias
-isoladas por escopo, cada uma dentro de sua própria função). A correção
-lê o VIP direto do `localStorage` (`acesso_vip_doma_liberado`), a mesma
-fonte de verdade que todas as outras cópias usam para se inicializar —
-isso garante que a validação funciona independentemente de qual parte
-do código está checando.
+Mesma técnica de antes: como esse trecho também vive numa IIFE isolada
+(separada do motor de navegação principal), a validação lê o VIP direto
+do `localStorage` (`acesso_vip_doma_liberado`), garantindo que funciona
+independente do escopo.
 
-Testado com dois cenários automatizados: usuário sem VIP (bloqueado,
-paywall aparece) e usuário com VIP (libera e avança para o mapa).
+Testado com dois cenários automatizados: usuário sem VIP (clique em
+AVANÇAR bloqueado, paywall aparece) e usuário com VIP (avança
+normalmente para a próxima tela).
 
 ## Mudanças anteriores (recapitulando)
 
-- Correção de responsividade mobile nas duas roletas (container e
-  canvas agora escalam corretamente em telas estreitas).
-- Padding em dezenas de telas específicas (Diário de Bordo, Planner,
-  Jogo da Verdade, etc.).
-- Padding nos modais da segunda roleta e do Plano Tático.
+- Correção de responsividade mobile nas duas roletas.
+- Padding em dezenas de telas específicas.
 - Corrigida a validação de `validarEAvancarData()`.
 - Modo de teste (`?teste=1&ir=ID`) via GitHub Pages.
 
@@ -39,11 +34,10 @@ paywall aparece) e usuário com VIP (libera e avança para o mapa).
 1. Suba `css/`, `js/`, `html/` e `manifest.json` para a raiz do
    repositório `livro_a_travessia` no GitHub.
 2. O `wix-loader.html` não mudou nesta rodada.
-3. Teste com `?teste=1&ir=pag-intro-darkmode` — o modo de teste libera o
-   VIP automaticamente, então pra testar o BLOQUEIO especificamente,
-   abra sem VIP liberado (sem `?teste=1`) e navegue manualmente até lá,
-   ou limpe o `localStorage` (`acesso_vip_doma_liberado`) no console
-   antes de testar.
+3. Pra testar o bloqueio: acesse sem VIP liberado e navegue até a tela
+   do lago (`pag-26`), ouça a música (ou espere/pule pra depois que ela
+   termina) e clique em "AVANÇAR ❯" — o paywall deve aparecer. Com VIP
+   liberado, deve avançar normalmente.
 
 ## Arquivos deste pacote
 

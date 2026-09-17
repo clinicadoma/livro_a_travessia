@@ -1,0 +1,89 @@
+<div class="swiper-slide">
+    <div class="doma-pagina" id="retrato-falado" style="padding: 10px; overflow-y: auto;"><div class="btn-voltar-sumario" onclick="irParaTela('pag-mapa-final')">☰</div>
+        <div class="trb_canvas_container">
+            <h3 style="font-weight: 900; color: #1e3a8a;">🎨 RETRATO FALADO</h3>
+            <p id="trb_dica_txt" style="font-size: 0.85rem; color: #b45309; margin-bottom: 10px;">Dê um rosto ao seu sintoma. </p>
+            
+            <div class="trb_canvas_wrap">
+                <canvas id="trb_monster_canvas" height="350"></canvas>
+            </div>
+
+            <div class="trb_tools" style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; margin: 0 auto 15px auto;">
+                <input type="range" id="trb_brush_size" min="1" max="30" value="5" title="Espessura" style="width: 100%; cursor: pointer;">
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+                    <button id="btn-pincel" onclick="trb_SetTool('pincel', this)" style="background: #bae6fd; border: 2px solid #0ea5e9; border-radius: 5px; padding: 8px;">🖌️</button>
+                    <button id="btn-borracha" onclick="trb_SetTool('borracha', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px;">🧼</button>
+                    <button id="btn-balde" onclick="trb_SetTool('balde', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px;">🪣</button>
+                    <button id="btn-tesoura" onclick="trb_SetTool('tesoura', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px;">✂️</button>
+                    <button id="btn-mover" onclick="trb_SetTool('mover', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: bold; font-size: 1.1rem; color: #334155;">🔲</button>
+                    <button id="btn-conta-gotas" onclick="trb_SetTool('conta-gotas', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px;">💉</button>
+                    <button id="btn-texto" onclick="trb_SetTool('texto', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: 900; color: #1e293b; font-family: serif;">A</button>
+                    <button onclick="trb_Undo()" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px;">↩️</button>
+                    
+                    <button id="btn-linha" onclick="trb_SetTool('linha', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: bold; font-size: 1.1rem; color: #334155;">╱</button>
+                    <button id="btn-retangulo" onclick="trb_SetTool('retangulo', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: bold; font-size: 1.1rem; color: #334155;">□</button>
+                    <button id="btn-circulo" onclick="trb_SetTool('circulo', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: bold; font-size: 1.1rem; color: #334155;">◯</button>
+                    <button id="btn-triangulo" onclick="trb_SetTool('triangulo', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: bold; font-size: 1.1rem; color: #334155;">△</button>
+                    <button id="btn-estrela" onclick="trb_SetTool('estrela', this)" style="background: #f8fafc; border: 1px solid #ddd; border-radius: 5px; padding: 8px; font-weight: bold; font-size: 1.1rem; color: #334155;">☆</button>
+                </div>
+
+                <div id="trb_paleta" style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 5px;"></div>
+            </div>
+
+            <div id="modal-texto-canvas" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 999999; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(5px);">
+                <div style="background: white; width: 100%; max-width: 350px; border-radius: 20px; padding: 25px 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border-top: 5px solid #0ea5e9;">
+                    <h3 style="color: #1e293b; font-family: 'Quicksand', sans-serif; font-weight: 900; margin: 0 0 15px 0; font-size: 1.2rem;">Inserir Texto</h3>
+                    <input type="text" id="input-texto-canvas" placeholder="Digite aqui..." style="width: 100%; padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 1rem; color: #334155; font-family: 'Quicksand', sans-serif; font-weight: bold; outline: none; margin-bottom: 20px; box-sizing: border-box;">
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="document.getElementById('modal-texto-canvas').style.display='none'" style="flex: 1; background: #f1f5f9; color: #64748b; border: 2px solid #cbd5e1; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer;">Cancelar</button>
+                        <button onclick="window.trb_ConfirmarTexto()" style="flex: 1; background: #0ea5e9; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="trb_paleta" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 380px; margin: 0 auto 15px auto;"></div>
+
+            <!-- div class="trb_status_box">
+                <strong>STATUS DO MONSTRINHO: <span id="trb_st_txt">Clique abaixo nos sintomas que ele te causa </span></strong>
+                <div class="trb_therm"><div id="trb_therm_fill"></div>
+			</div>
+			<div id="trb_sintomas_list" class="trb_sintomas_grid">
+				<label><input type="checkbox" class="trb_c_s" onchange="trb_UpdateTherm()"> 💓 Palpitação</label>
+			</div -->
+           
+            <button class="btn-doma" style="background: #1e3a8a;" onclick="trb_SalvarDesenho()">FINALIZAR RETRATO ➔</button>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center;">
+        <div class="trb_termo_box">
+            <h3 class="trb_termo_tit">TERMO DE COMPROMISSO</h3>
+            <p class="trb_termo_txt">Eu assumo minha responsabilidade como Domador. Prometo acolher e cuidar do sintoma materializado, não mais fugindo da minha verdade.</p>
+            <input type="text" id="trb_assinatura" class="trb_input_sign" placeholder="Assine aqui...">
+            <button class="btn-doma" onclick="trb_Assinar()">ASSINAR E SELAR ✅</button>
+        </div>
+    </div>
+</div>
+<div class="swiper-slide">
+    <div class="doma-pagina" style="padding: 20px; display: flex; align-items: center; justify-content: center; background: #fdfaf6;">
+        <div style="background: white; border: 4px solid #1e3a8a; padding: 30px 20px; border-radius: 20px; text-align: center; width: 100%; /* max-width: 450px; */ box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);">
+            <span style="font-size: 45px; display: block; margin-bottom: 15px;">🗣️</span>
+            <h2 style="color: #1e3a8a; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 15px;">O Eco Não é a Sua Voz</h2>
+            
+            <p style="color: #475569; font-size: 1rem; line-height: 1.6; text-align: justify; font-weight: 500; margin-bottom: 15px; font-family: 'Montserrat', sans-serif;">
+                As frases que você acabou de mapear são apenas a ponta do iceberg. Elas representam as dores que carregamos, mas a verdade é que a sua história possui uma "trilha sonora" própria.
+            </p>
+            <p style="color: #475569; font-size: 1rem; line-height: 1.6; text-align: justify; font-weight: 500; margin-bottom: 25px; font-family: 'Montserrat', sans-serif;">
+                Existem dezenas de outras crenças — ditas em momentos de raiva, pressa ou medo pelos adultos do seu passado — que foram plantadas na sua mente infantil. Hoje, disfarçadas de intuição ou medo, são elas que continuam ditando as suas escolhas.
+            </p>
+            
+            <button class="btn-doma" style="background: #1e3a8a; color: white; border: none; width: 100%; padding: 18px; border-radius: 50px; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);" onclick="trb_mudar(1)">
+                PROSSEGUIR ➔
+            </button>
+        </div>
+    </div>
+</div>
+

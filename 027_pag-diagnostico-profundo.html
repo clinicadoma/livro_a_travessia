@@ -1,0 +1,134 @@
+<div class="doma-pagina bg-escuro-luxo" id="pag-diagnostico-profundo">
+    <div class="btn-voltar-sumario" onclick="irParaTela('pag-mapa-final')" style="border-color:#334155; background:rgba(15,23,42,0.8); color:white;">☰</div>
+    <div id="DOM_EXPERIENCIA_COMPLETA" style="padding-top: 60px !important;">
+        
+        <div id="TELA_INTRO">
+            <span style="background: rgba(255,255,255,0.1); color: #38bdf8; padding: 6px 15px; border-radius: 20px; font-weight: bold; font-size: 11px; margin-bottom: 15px; display: inline-block; letter-spacing: 1px;">Fase 3 • O Diagnóstico Profundo 🚨</span>
+            <div style="font-size: 4rem; animation: pulsarVivo 2s infinite; margin-bottom: 1vh;">🥚</div>
+            <h2 style="color: #f59e0b; font-family: 'Orbitron'; font-size: 1.8rem; margin: 10px 0;">VAMOS CHOCAR?</h2>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 15px; border-radius: 16px; margin-bottom: 25px;">
+                <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0; line-height: 1.6;">Responda às 45 questões com total sinceridade. Você ganhará <strong style="color: #fcd34d;">+50 Doma Coins</strong> na sua primeira quebra!</p>
+            </div>
+            <button class="btn-doma" style="background: linear-gradient(45deg, #ea580c, #f97316); box-shadow: 0 10px 25px rgba(234,88,12,0.3); padding: 2vh; border-radius: 50px; margin-top: 0;" onclick="começarQuiz()">🔥 Iniciar Gestação</button>
+        </div>
+
+        <div id="TELA_QUIZ" style="display:none;">
+            <div class="container-progresso">
+                <div id="OVO_CAMINHANTE"></div>
+                <div class="barra-prog"><div id="FILL_PROG"></div></div>
+            </div>
+            <div id="CONTEUDO_QUESTOES"></div>
+        </div>
+
+        <div id="TELA_QUEBRA" style="display:none; padding-bottom: 15px;" onmousedown="baterOvo(event)" ontouchstart="baterOvo(event)">
+            <h2 style="color:#facc15; font-family:'Orbitron'; font-size: 1.3rem; margin-top: 10px; letter-spacing: 1px;">O MONSTRO ESTÁ PRONTO!</h2>
+            <p id="instrucao-ovo" style="color: #38bdf8; font-size: 0.85rem; font-weight: bold; margin-bottom: 20px;">TOQUE NA CASCA PARA QUEBRAR A RESISTÊNCIA (10x)</p>
+            <div id="HOLDER_REVELACAO">
+                <div id="NOME_MONSTRO_TOPO"></div>
+                <div id="CASCA_REVELA"></div>
+                <div id="MONSTRO_FINAL_IMG"></div>
+            </div>
+            <button id="BTN_SAIBA_MAIS" class="btn-doma efeito-tremor" style="background: linear-gradient(45deg, #ff9f43, #ff6b6b); color: white; padding: 15px; margin-top: 5px; box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4); display: none; width: 100%; border: 2px solid #fff; position: relative; z-index: 10;" onclick="exibirCardDiagnostico()">🔍 REVELAR MEU DIAGNÓSTICO CLÍNICO</button>
+        </div>
+
+        <div id="PLACA_FINAL_CARDS" class="container-diagnostico" style="display: none; max-height: 85vh; overflow-y: auto; padding-bottom: 20px; scrollbar-width: none; scroll-behavior: smooth;">
+            
+            
+
+            <div class="topo-diagnostico" id="topo-card-dinamico" style="padding: 20px;">
+                 <h2 id="topo-nome-monstro" style="margin: 0; font-size: 1.5rem; font-family: 'Orbitron'; text-shadow: 0 2px 5px rgba(0,0,0,0.2);">LAUDO CLÍNICO</h2>
+            </div>
+            
+            <div class="area-card-dinamico">
+                <div id="card-resultado" class="card-monstro-dinamico" style="overflow: hidden; padding: 0; position: relative; width: 100%;">
+                    
+                    <div id="trilha-slides" style="display: flex; flex-direction: row; flex-wrap: nowrap; width: 1000%; transition: transform 0.5s ease-in-out;">
+                        
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box; text-align: center;">
+                            <h2 style="color: #1e293b; font-size: 1.6rem; font-weight: 900; margin-bottom: 15px;">Qual Monstrinho está no controle hoje?</h2>
+                            <p style="color: #64748b; font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">Use este laudo como um mapa para reconhecer sua voz interna e parar de confundir quem você é com o que você sente.</p>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(2)" style="background: #2c3e50; width: 100%; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">VAMOS DESCOBRIR? ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box; text-align: center;">
+                            <h4 style="color: #94a3b8; margin-bottom: 15px; font-family: 'Orbitron';">O SEU RESULTADO É:</h4>
+                            <span class="cap-titulo-dinamico" id="d-nome-monstro" style="font-size: 2.2rem; margin-bottom: 25px; display: block;"></span>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(3)" style="background: #2c3e50; width: 100%; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">LER O DIAGNÓSTICO ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <div id="d-diagnostico-base" style="color: #334155; font-size: 1.05rem; line-height: 1.6; text-align: left;"></div>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(4)" style="background: #2c3e50; width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">PROSSEGUIR: O QUE ELE AFETA ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <h4 style="color: #1e293b; margin: 10px 0 15px 0; font-family: 'Orbitron';">O Que Ele Afeta:</h4>
+                            <p id="d-afeta" style="color: #334155; font-size: 1.05rem; margin-bottom: 15px; line-height: 1.6; text-align: left;"></p>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(5)" style="background: #2c3e50; width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">AVANÇAR: VER ALERTA CLÍNICO ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <div class="confusao-alerta-dinamico" id="d-alerta" style="text-align: left; padding: 15px; animation: pisca-alerta 1.5s infinite;"></div>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(6)" style="background: #2c3e50; width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">PROSSEGUIR: SINTOMAS FÍSICOS ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <div id="d-corpo" style="text-align: left;"></div>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(7)" style="background: #2c3e50; width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">REVELAR IMPACTO EMOCIONAL ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <div id="d-emocionais" style="text-align: left;"></div>
+                            <button class="btn-doma" onclick="mudarSlideDiagnostico(8)" style="background: #2c3e50; width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">LER A PERGUNTA FINAL ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <h4 style="color: #1e293b; margin: 10px 0 15px 0; font-family: 'Orbitron'; text-transform: uppercase;">A Pergunta Final:</h4>
+                            <span class="pergunta-interativa-dinamico" id="d-pergunta" style="font-size: 1.15rem; display: block; margin-top: 20px; text-align: center;"></span>
+                           
+
+
+
+
+
+
+ <button class="btn-doma" onclick="mudarSlideDiagnostico(9)" style="background: #2c3e50; width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold;">O QUE FAZER AGORA? ➔</button>
+                        </div>
+
+                        <div style="width: 10%; flex: 0 0 10%; padding: 20px; box-sizing: border-box;">
+                            <div style="text-align: center; background: #1a1a1a; padding: 30px 20px; border-radius: 12px; border: 2px dashed #ff9f43;">
+                                <h3 style="color: #ff9f43; margin-bottom: 15px; font-size: 1.3rem; font-family: 'Orbitron';">⚠️ O DIAGNÓSTICO ESTÁ COMPLETO.</h3>
+                                <p style="color: #ddd; font-size: 1rem; line-height: 1.6; margin-bottom: 0;">Você descobriu quem controla seus bastidores. Mas saber o nome dele não o coloca de volta na jaula.</p>
+                            </div>
+
+
+                           <button class="btn-doma" onclick="mudarPagina(1)" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 100%; margin-top: 25px; padding: 15px; border-radius: 10px; color: white; font-weight: bold; box-shadow: 0 5px 15px rgba(16,185,129,0.3);">
+    ✨ REVELAR A RAIZ ➔
+</button>
+ 
+                                          
+                      
+                      </div> </div> </div> </div> </div> </div> </div> 
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  

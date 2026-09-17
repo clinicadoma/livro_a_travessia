@@ -1,23 +1,36 @@
 # Clínica Doma — versão modular com carregamento sob demanda
 
-## Mudança nesta versão
+## Mudança nesta versão: gate VIP no "Laboratório" do Mapa da Travessia
 
-Havia 4 telas usando o quadro "O SEU DIÁRIO DE BORDO" (classe
-`.diario-base`) espalhadas pelo livro. O ajuste anterior (`padding-top:
-70px !important` na classe CSS) já valia para todas elas, mas a que
-fica logo antes de "Acolhendo o Polvo" (tema rosa, "Pausa para
-Reflexão: Dentre os sintomas, qual mais te assombra?") agora também
-recebeu o padding diretamente na sua `wrapper-isolado`, para garantir
-consistência com o padrão aplicado nas outras 34 telas.
+No fluxo O MAPA DA SUA TRAVESSIA → LABORATÓRIO:
+1. Usuário clica em "MAPEAR MEUS SINTOMAS"
+2. Escolhe de 1 a 3 sintomas
+3. Clica em "MONTAR MEU MAPA DE TRATAMENTO"
+
+Esse último clique agora **valida se o usuário é VIP**. Se não for, o
+paywall (`slide-paywall-vip`) aparece e o usuário não avança — a parte
+gratuita do Mapa da Travessia termina exatamente nesse ponto, como
+pedido.
+
+**Detalhe técnico:** essa seção ("dm...") vive numa IIFE JavaScript
+separada do motor de navegação principal, então não dava para reutilizar
+a variável `isUsuarioPremium` de lá diretamente (ela existe em cópias
+isoladas por escopo, cada uma dentro de sua própria função). A correção
+lê o VIP direto do `localStorage` (`acesso_vip_doma_liberado`), a mesma
+fonte de verdade que todas as outras cópias usam para se inicializar —
+isso garante que a validação funciona independentemente de qual parte
+do código está checando.
+
+Testado com dois cenários automatizados: usuário sem VIP (bloqueado,
+paywall aparece) e usuário com VIP (libera e avança para o mapa).
 
 ## Mudanças anteriores (recapitulando)
 
-- Padding em 34 telas `wrapper-isolado` + quadro do Diário de Bordo +
-  `#acolhendo-polvo` + `#DOM_EXPERIENCIA_COMPLETA` + 5 telas "AVALIAÇÃO
-  DAS PERDAS".
-- Padding nos modais da segunda roleta.
-- Registrado o `padding-bottom: 10px` em `#slide-data-inicio` e
-  `#slide-contrato`.
+- Correção de responsividade mobile nas duas roletas (container e
+  canvas agora escalam corretamente em telas estreitas).
+- Padding em dezenas de telas específicas (Diário de Bordo, Planner,
+  Jogo da Verdade, etc.).
+- Padding nos modais da segunda roleta e do Plano Tático.
 - Corrigida a validação de `validarEAvancarData()`.
 - Modo de teste (`?teste=1&ir=ID`) via GitHub Pages.
 
@@ -26,6 +39,11 @@ consistência com o padrão aplicado nas outras 34 telas.
 1. Suba `css/`, `js/`, `html/` e `manifest.json` para a raiz do
    repositório `livro_a_travessia` no GitHub.
 2. O `wix-loader.html` não mudou nesta rodada.
+3. Teste com `?teste=1&ir=pag-intro-darkmode` — o modo de teste libera o
+   VIP automaticamente, então pra testar o BLOQUEIO especificamente,
+   abra sem VIP liberado (sem `?teste=1`) e navegue manualmente até lá,
+   ou limpe o `localStorage` (`acesso_vip_doma_liberado`) no console
+   antes de testar.
 
 ## Arquivos deste pacote
 

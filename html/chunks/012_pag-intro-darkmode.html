@@ -197,13 +197,6 @@
 
   window.dmIniciar=function(){
     if(!sel.length) return;
-    var dmEhPremium = false;
-    try { dmEhPremium = localStorage.getItem('acesso_vip_doma_liberado') === 'true'; } catch(e) {}
-    if (!window.__domaModoTeste && !dmEhPremium) {
-        var pw = document.getElementById('slide-paywall-vip');
-        if (pw) pw.style.display = 'flex';
-        return;
-    }
     resolvidos=[]; atual=null; dmSom('whoosh'); dmRenderMapa(); mudarPagina(1);
   };
 

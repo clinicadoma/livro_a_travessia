@@ -319,6 +319,14 @@ if(audio) {
             e.preventDefault();
             e.stopPropagation(); 
 
+            var lagoEhPremium = false;
+            try { lagoEhPremium = localStorage.getItem('acesso_vip_doma_liberado') === 'true'; } catch(err) {}
+            if (!window.__domaModoTeste && !lagoEhPremium) {
+                var pwLago = document.getElementById('slide-paywall-vip');
+                if (pwLago) pwLago.style.display = 'flex';
+                return;
+            }
+
             if(telaIsolada && proximaTela) {
                 telaIsolada.style.transition = "all 1.2s ease-in-out";
                 telaIsolada.style.opacity = "0";

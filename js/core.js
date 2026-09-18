@@ -2191,17 +2191,17 @@ function tocarSireneRoleta() {
         }
 
         if (tipo === 'sucesso') {
-            img.src = 'https://i.postimg.cc/cHCq7BvW/autoestisma.png'; img.style.borderColor = '#10b981'; 
+            img.src = 'https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/autoestisma.jpg'; img.style.borderColor = '#10b981'; 
             tit.style.color = '#047857';
         } else if (tipo === 'amor') {
-            img.src = 'https://i.postimg.cc/ht0PpMtg/amor-proprio.png'; img.style.borderColor = '#be185d';
+            img.src = 'https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/amor-proprio.jpg'; img.style.borderColor = '#be185d';
             tit.style.color = '#be185d';
         } else if (tipo === 'alerta') {
-            img.src = 'https://i.postimg.cc/7LxrhkDv/ansiedade.png'; img.style.borderColor = '#e11d48';
+            img.src = 'https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/ansiedade.jpg'; img.style.borderColor = '#e11d48';
             tit.style.color = '#be123c';
             bip(300, 'sawtooth', 0.15); setTimeout(()=>bip(250, 'sawtooth', 0.2), 200); // Som de Sirene
         } else {
-            img.src = 'https://i.postimg.cc/HLGxyf9V/Captura-de-tela-2025-09-27-133248.png'; img.style.borderColor = '#f59e0b';
+            img.src = 'https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/Captura-de-tela-2025-09-27-133248.png'; img.style.borderColor = '#f59e0b';
             tit.style.color = '#b45309';
         }
 
@@ -2265,12 +2265,12 @@ function tocarSireneRoleta() {
     // JOGO DA MEMÓRIA COM ANTI-FARMING (RECORDE)
     // ==========================================
     const monstrosMem = [
-        { n: "CAOS", i: "https://i.postimg.cc/7LxrhkDv/ansiedade.png" },
-        { n: "VALOR", i: "https://i.postimg.cc/cHCq7BvW/autoestisma.png" },
-        { n: "SOLIDÃO", i: "https://i.postimg.cc/ht0PpMtg/amor-proprio.png" },
-        { n: "RAIVA", i: "https://i.postimg.cc/d34cGNBq/Laranja.png" },
-        { n: "MEDO", i: "https://i.postimg.cc/ZRzWQ0h6/Coracao.png" },
-        { n: "CULPA", i: "https://i.postimg.cc/SN1Jhgpr/Captura-de-tela-2026-03-24-151245-removebg-preview.png" }
+        { n: "CAOS", i: "https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/ansiedade.jpg" },
+        { n: "VALOR", i: "https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/autoestisma.jpg" },
+        { n: "SOLIDÃO", i: "https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/amor-proprio.jpg" },
+        { n: "RAIVA", i: "https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/Laranja.jpg" },
+        { n: "MEDO", i: "https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/Coracao.jpg" },
+        { n: "CULPA", i: "https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/Captura-de-tela-2026-03-24-151245-removebg-preview.png" }
     ];
     let cartasM = [...monstrosMem, ...monstrosMem];
     let selCards = [], encM = [], nomesEncM = [], pts = 0, jogandoM = false;
@@ -2317,7 +2317,7 @@ function tocarSireneRoleta() {
                     }, 600);
                 }
             };
-            c.innerHTML = `<div class="card-face face-front"><img src="${m.i}" class="img-m"><span>${m.n}</span></div><div class="card-face face-back"><img src="https://i.postimg.cc/nz7dRt0b/Captura-de-tela-2025-09-27-133248.png" class="img-doma-logo"></div>`;
+            c.innerHTML = `<div class="card-face face-front"><img src="${m.i}" class="img-m"><span>${m.n}</span></div><div class="card-face face-back"><img src="https://raw.githubusercontent.com/clinicadoma/livro_a_travessia/main/img/Captura-de-tela-2025-09-27-133248.png" class="img-doma-logo"></div>`;
             grid.appendChild(c);
         });
 

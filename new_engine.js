@@ -248,6 +248,7 @@
             // Trava G: No slide do Lago (O Ilusionista / Papel de Pão)
             if (idAtual === 'pag-26') {
                 if (!window.lagoLiberado) mostrarSetaDir = false;
+                if (!isUsuarioPremium && !window.__domaModoTeste) mostrarSetaDir = false;
             }
 
             // Trava H: Na tela de iniciar a triagem
@@ -285,6 +286,15 @@
         let proximaPagina = (pagAtiva + dir + total) % total;
 
         if (proximaPagina >= indexTribunal && !isUsuarioPremium && !window.__domaModoTeste) {
+            document.getElementById('slide-paywall-vip').style.display = 'flex';
+            return;
+        }
+
+        // Trava G (VIP): sair da tela do lago (pag-26) para frente também exige VIP,
+        // não só o término da música. Cobre a seta de navegação padrão e o swipe,
+        // já que o botão "AVANÇAR" da própria cena tem sua própria checagem separada.
+        var elementoAtualPreCheck = paginasElementos[pagAtiva];
+        if (dir > 0 && elementoAtualPreCheck && elementoAtualPreCheck.id === 'pag-26' && !isUsuarioPremium && !window.__domaModoTeste) {
             document.getElementById('slide-paywall-vip').style.display = 'flex';
             return;
         }
@@ -338,6 +348,14 @@
         }
 
         if (alvoIndex >= indexTribunal && !isUsuarioPremium && !window.__domaModoTeste) {
+            document.getElementById('slide-paywall-vip').style.display = 'flex';
+            return;
+        }
+
+        // Trava G (VIP): pular direto para qualquer página depois da tela do lago
+        // (pag-26) também exige VIP — cobre o caso de acesso via menu/sumário.
+        let indexPag26 = domaIndexPorId('pag-26');
+        if (indexPag26 !== -1 && alvoIndex > indexPag26 && !isUsuarioPremium && !window.__domaModoTeste) {
             document.getElementById('slide-paywall-vip').style.display = 'flex';
             return;
         }

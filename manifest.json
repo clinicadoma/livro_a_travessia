@@ -200,19 +200,13 @@
     },
     {
       "index": 33,
-      "arquivo": "033_loja-discos.html",
-      "start_id": "loja-discos",
-      "is_core": false
-    },
-    {
-      "index": 34,
-      "arquivo": "034_pag-jogo-insights.html",
+      "arquivo": "033_pag-jogo-insights.html",
       "start_id": "pag-jogo-insights",
       "is_core": false
     },
     {
-      "index": 35,
-      "arquivo": "035_pag-72.html",
+      "index": 34,
+      "arquivo": "034_pag-72.html",
       "start_id": "pag-72",
       "is_core": true
     }
@@ -703,16 +697,12 @@
       "chunk": 32
     },
     {
-      "id": "loja-discos",
+      "id": "pag-jogo-insights",
       "chunk": 33
     },
     {
-      "id": "pag-jogo-insights",
-      "chunk": 34
-    },
-    {
       "id": "pag-72",
-      "chunk": 35
+      "chunk": 34
     }
   ]
 }

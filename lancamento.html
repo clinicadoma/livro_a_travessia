@@ -186,6 +186,25 @@
             transform: translate(-50%, -50%);
             z-index: 200;
         }
+
+        /* Ajuste para telas baixas (celular): tudo cabe sem estourar a altura */
+        html, body { max-width: 100%; }
+        body { min-height: 100%; justify-content: flex-start; }
+        @media (max-height: 800px), (max-width: 480px) {
+            main { padding-top: 12px !important; padding-bottom: 12px !important; }
+            main h1 { margin-bottom: 10px !important; font-size: 1.5rem !important; line-height: 1.2 !important; }
+            main h1 span { font-size: 1.9rem !important; }
+            main .mb-8 { margin-bottom: 10px !important; }
+            .glass-panel { padding: 12px !important; }
+            .time-box { min-width: 64px; padding: 6px 8px; }
+            .time-box span:first-child { font-size: 2rem !important; }
+            .mini-monster-container { margin-top: 10px; gap: 14px; }
+            .mini-monster { width: 44px; height: 44px; }
+            .eye { width: 10px; height: 13px; top: 10px; }
+            .eye::after { width: 4px; height: 4px; top: 3px; }
+            .eye.left { left: 8px; } .eye.right { right: 8px; }
+            #back-btn { margin-top: 16px !important; padding: 10px 24px !important; font-size: 1.1rem !important; }
+        }
     </style>
 </head>
 <body class="relative">
@@ -216,7 +235,7 @@
 
         <!-- Imagem Central do Doma (Com drop-shadow PNG e mb-8 para não sobrepor) -->
         <div class="relative z-20 mb-8">
-            <img src='https://static.wixstatic.com/media/253e81_6b98213710ea43b4a9ceaedb738843d5~mv2.png' alt='Monstro Doma' style='max-width: 300px; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));'>
+            <img src='https://static.wixstatic.com/media/253e81_6b98213710ea43b4a9ceaedb738843d5~mv2.png' alt='Monstro Doma' style='max-width: min(300px, 26vh); height: auto; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));'>
         </div>
 
         <!-- Painel de Contagem Regressiva -->

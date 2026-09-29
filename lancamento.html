@@ -29,7 +29,7 @@
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: white;
-            min-height: 100vh;
+            min-height: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -189,8 +189,8 @@
 
         /* Ajuste para telas baixas (celular): tudo cabe sem estourar a altura */
         html, body { max-width: 100%; }
-        body { min-height: 100%; justify-content: flex-start; }
-        @media (max-height: 800px), (max-width: 480px) {
+        body { min-height: 0 !important; justify-content: flex-start; }
+        @media (max-width: 600px) {
             main { padding-top: 12px !important; padding-bottom: 12px !important; }
             main h1 { margin-bottom: 10px !important; font-size: 1.5rem !important; line-height: 1.2 !important; }
             main h1 span { font-size: 1.9rem !important; }
@@ -205,6 +205,27 @@
             .eye.left { left: 8px; } .eye.right { right: 8px; }
             #back-btn { margin-top: 16px !important; padding: 10px 24px !important; font-size: 1.1rem !important; }
         }
+
+        /* Celular / iframe baixo: compacta ao máximo para caber sem rolar */
+        @media (max-width: 600px) {
+            main h1 { font-size: 1.2rem !important; margin-bottom: 6px !important; }
+            main h1 span { font-size: 1.5rem !important; }
+            main img { max-width: min(300px, 32vw) !important; }
+            main .mb-8 { margin-bottom: 4px !important; }
+            .glass-panel { padding: 8px !important; }
+            .glass-panel > div.flex { margin-top: 0 !important; gap: 8px !important; }
+            .time-box { min-width: 54px; padding: 4px 6px; }
+            .time-box span:first-child { font-size: 1.6rem !important; }
+            .time-box span:last-child { font-size: 0.7rem !important; margin-top: 0 !important; }
+            .mini-monster-container { margin-top: 6px; gap: 10px; }
+            .mini-monster { width: 34px; height: 34px; }
+            .eye { width: 8px; height: 10px; top: 8px; }
+            .eye::after { width: 3px; height: 3px; top: 2px; }
+            .eye.left { left: 6px; } .eye.right { right: 6px; }
+            .mouth { bottom: 8px; }
+            #back-btn { margin-top: 10px !important; padding: 8px 20px !important; font-size: 1rem !important; border-width: 3px; }
+        }
+        #start-overlay h1 { font-size: clamp(1.6rem, 6vw, 3.5rem); }
     </style>
 </head>
 <body class="relative">
@@ -235,7 +256,7 @@
 
         <!-- Imagem Central do Doma (Com drop-shadow PNG e mb-8 para não sobrepor) -->
         <div class="relative z-20 mb-8">
-            <img src='https://static.wixstatic.com/media/253e81_6b98213710ea43b4a9ceaedb738843d5~mv2.png' alt='Monstro Doma' style='max-width: min(300px, 26vh); height: auto; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));'>
+            <img src='https://static.wixstatic.com/media/253e81_6b98213710ea43b4a9ceaedb738843d5~mv2.png' alt='Monstro Doma' style='max-width: min(300px, 40vw); height: auto; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));'>
         </div>
 
         <!-- Painel de Contagem Regressiva -->
@@ -448,6 +469,20 @@
         // Iniciar o relógio
         setInterval(updateCountdown, 1000);
         updateCountdown(); // Chamada inicial para evitar delay de 1 segundo
+
+        // 5. Avisa o loader (e este, o Wix) a altura REAL do conteúdo desta tela
+        function reportarAltura() {
+            try {
+                const m = document.querySelector('main');
+                const h = Math.ceil(m.getBoundingClientRect().bottom + (window.scrollY || 0)) + 16;
+                if (h !== window.__ultimaAlturaLanc) {
+                    window.__ultimaAlturaLanc = h;
+                    window.parent.postMessage({ acao: 'domaLancamentoAltura', height: h }, '*');
+                }
+            } catch (e) {}
+        }
+        setInterval(reportarAltura, 300);
+        reportarAltura();
 
     </script>
 </body>

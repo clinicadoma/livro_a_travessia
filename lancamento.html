@@ -190,7 +190,8 @@
         /* Ajuste para telas baixas (celular): tudo cabe sem estourar a altura */
         html, body { max-width: 100%; }
         html { height: 100%; } body { min-height: 100vh !important; justify-content: flex-start; }
-        main { flex: 1 1 auto; min-height: 100vh; justify-content: space-evenly !important; }
+        main { flex: 1 1 auto; margin-top: var(--vt, 0px); min-height: var(--vh, 100vh); box-sizing: border-box; justify-content: space-evenly !important; }
+        #start-overlay { top: var(--vt, 0px) !important; height: var(--vh, 100%) !important; }
         @media (max-width: 600px) {
             main { padding-top: 12px !important; padding-bottom: 12px !important; }
             main h1 { margin-bottom: 10px !important; font-size: 1.5rem !important; line-height: 1.2 !important; }
@@ -244,6 +245,7 @@
     </style>
 </head>
 <body class="relative">
+    <div id="area-visivel" style="position:fixed;inset:0;pointer-events:none;opacity:0;"></div>
 
     <!-- BOTÃO DE MUTE -->
     <button id="mute-btn" class="fixed top-4 right-4 z-50 bg-white/20 hover:bg-white/40 backdrop-blur-md border border-white/50 rounded-full w-12 h-12 flex items-center justify-center text-2xl transition-all shadow-lg cursor-pointer" style="display: none;">
@@ -506,6 +508,21 @@
         }
         setInterval(reportarAltura, 300);
         reportarAltura();
+
+        // 6. Posiciona o conteúdo na parte do frame que está REALMENTE visível na tela
+        // (o frame pode ser um pouco mais alto que a tela e começar acima/abaixo dela).
+        (function () {
+            if (!('IntersectionObserver' in window)) return;
+            const alvo = document.getElementById('area-visivel');
+            const th = []; for (let i = 0; i <= 100; i++) th.push(i / 100);
+            new IntersectionObserver(function (entries) {
+                const e = entries[entries.length - 1];
+                const r = e.intersectionRect;
+                if (!e.isIntersecting || r.height < 200) return;
+                document.documentElement.style.setProperty('--vt', Math.round(r.top) + 'px');
+                document.documentElement.style.setProperty('--vh', Math.round(r.height) + 'px');
+            }, { threshold: th }).observe(alvo);
+        })();
 
     </script>
 </body>

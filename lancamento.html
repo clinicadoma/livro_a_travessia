@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- LANCAMENTO_VERSAO: 2026-09-29-monstro-72vw -->
+    <!-- LANCAMENTO_VERSAO: 2026-09-29-planos-link -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lançamento Plataforma Doma</title>
@@ -432,8 +432,13 @@
                 // Toca som de pop
                 synthPop.triggerAttackRelease("C5", "8n");
             }
-            // Mostra o modal customizado (sem usar alert!)
-            document.getElementById('custom-alert').style.display = 'block';
+            // Leva a página do Wix (janela pai/topo) para a página de planos
+            const URL_PLANOS = 'https://www.clinicadoma.com/pricing-plans/list';
+            try {
+                window.top.location.href = URL_PLANOS;
+            } catch (e) {
+                try { window.open(URL_PLANOS, '_top'); } catch (e2) { window.open(URL_PLANOS, '_blank'); }
+            }
         });
 
         document.getElementById('close-alert-btn').addEventListener('click', () => {

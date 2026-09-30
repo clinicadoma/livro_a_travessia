@@ -189,7 +189,8 @@
 
         /* Ajuste para telas baixas (celular): tudo cabe sem estourar a altura */
         html, body { max-width: 100%; }
-        body { min-height: 0 !important; justify-content: flex-start; }
+        html { height: 100%; } body { min-height: 100vh !important; justify-content: flex-start; }
+        main { flex: 1 1 auto; min-height: 100vh; justify-content: space-evenly !important; }
         @media (max-width: 600px) {
             main { padding-top: 12px !important; padding-bottom: 12px !important; }
             main h1 { margin-bottom: 10px !important; font-size: 1.5rem !important; line-height: 1.2 !important; }
@@ -487,8 +488,16 @@
         // 5. Avisa o loader (e este, o Wix) a altura REAL do conteúdo desta tela
         function reportarAltura() {
             try {
+                // Altura NATURAL do conteúdo (soma dos blocos), independente de o main
+                // estar esticado para preencher o iframe.
                 const m = document.querySelector('main');
-                const h = Math.ceil(m.getBoundingClientRect().bottom + (window.scrollY || 0)) + 16;
+                const cs = getComputedStyle(m);
+                let h = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+                Array.from(m.children).forEach(c => {
+                    const k = getComputedStyle(c);
+                    h += c.getBoundingClientRect().height + parseFloat(k.marginTop) + parseFloat(k.marginBottom);
+                });
+                h = Math.ceil(h) + 16;
                 if (h !== window.__ultimaAlturaLanc) {
                     window.__ultimaAlturaLanc = h;
                     window.parent.postMessage({ acao: 'domaLancamentoAltura', height: h }, '*');

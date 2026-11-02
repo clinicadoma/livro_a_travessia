@@ -248,8 +248,23 @@
     Promise.all([
       buscarJSON(BASE + "manifest.json" + CACHE_BUST),
       buscarTexto(BASE + "css/style.css" + CACHE_BUST),
-      buscarTexto(BASE + "js/core.js" + CACHE_BUST)
+      buscarTexto(BASE + "js/core.js" + CACHE_BUST),
+      buscarTexto(BASE + "js/niveis.js" + CACHE_BUST)
     ])
+    .then(function (resultados) {
+      var manifest = resultados[0];
+      var css = resultados[1];
+      var coreJs = resultados[2];
+      var niveisJs = resultados[3];
+
+      // NÍVEIS + PROGRESSO NA CONTA: precisa rodar ANTES do core.js, porque o
+      // core.js lê as moedas e a página alcançada do localStorage assim que
+      // é injetado. O niveis.js busca o progresso salvo na conta do membro
+      // (via código da página do Wix) e grava no localStorage primeiro.
+      injetarJS(niveisJs);
+      var preparo = (window.DomaNiveis && window.DomaNiveis.preparar) ? window.DomaNiveis.preparar() : Promise.resolve();
+      return preparo.then(function () { return [manifest, css, coreJs]; });
+    })
     .then(function (resultados) {
       var manifest = resultados[0];
       var css = resultados[1];

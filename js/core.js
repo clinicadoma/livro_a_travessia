@@ -1929,6 +1929,7 @@ function tocarSireneRoleta() {
         try { window.parent.postMessage({ acao: 'htmlPronto' }, "*"); } catch(e) {}
         atualizarVisibilidadeSeta();
         atualizarVisualSumario();
+        if (window.DomaNiveis) window.DomaNiveis.depoisDoBoot(manifestDoma);
     };
 
     // Criamos uma variável global de controle para o Teste 1
@@ -2028,6 +2029,9 @@ function tocarSireneRoleta() {
 
         let proximaPagina = (pagAtiva + dir + total) % total;
 
+        // Trava de NÍVEL (js/niveis.js): cada nível abre com um mês pago do plano
+        if (window.DomaNiveis && !window.DomaNiveis.podeIrPara(proximaPagina, manifestDoma)) return;
+
         if (proximaPagina >= indexTribunal && !isUsuarioPremium && !window.__domaModoTeste) {
             document.getElementById('slide-paywall-vip').style.display = 'flex';
             return;
@@ -2055,6 +2059,7 @@ function tocarSireneRoleta() {
         elementoAlvo.classList.add('ativa');
         elementoAlvo.scrollTop = 0;
         atualizarVisibilidadeSeta();
+        if (window.DomaNiveis) window.DomaNiveis.entrouNaPagina(pagAtiva, manifestDoma);
 
         // CORREÇÃO APLICADA: O progresso SÓ É SALVO se a página não for um Sumário!
         let idAtual = manifestDoma.pages[pagAtiva].id;
@@ -2090,6 +2095,9 @@ function tocarSireneRoleta() {
             maxPaginaAlcancada = alvoIndex;
         }
 
+        // Trava de NÍVEL (js/niveis.js)
+        if (window.DomaNiveis && !window.DomaNiveis.podeIrPara(alvoIndex, manifestDoma)) return;
+
         if (alvoIndex >= indexTribunal && !isUsuarioPremium && !window.__domaModoTeste) {
             document.getElementById('slide-paywall-vip').style.display = 'flex';
             return;
@@ -2115,6 +2123,7 @@ function tocarSireneRoleta() {
         elementoAlvo.classList.add('ativa');
         elementoAlvo.scrollTop = 0;
         atualizarVisibilidadeSeta();
+        if (window.DomaNiveis) window.DomaNiveis.entrouNaPagina(pagAtiva, manifestDoma);
 
         // CORREÇÃO APLICADA: Evita o bug de pontuação do menu
         let idAtual = manifestDoma.pages[pagAtiva].id;
